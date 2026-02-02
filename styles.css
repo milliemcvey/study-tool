@@ -1,0 +1,48 @@
+@import url('https://fonts.googleapis.com/css2?family=SN+Pro:ital,wght@0,200..900;1,200..900&display=swap');
+
+
+/* -------------- Universal Styling ------------- */
+* {
+    font-family: "SN Pro", sans-serif;
+    margin: 0;
+}
+wrap {
+ color: lightgoldenrodyellow;   
+}
+/* -------------- Header Styling ------------- */
+h1{
+
+}
+h2 {
+
+}
+h3 {
+    font-size: 1.3em;
+}
+h4 {
+
+}
+h5{
+
+}
+/* -------------- Header Bar Styling ------------- */
+.header-bar {
+    background-color: rgb(44, 44, 44);
+    color: white;
+    display: flex;
+    flex-direction: row;
+    padding-left: 8%;
+    gap: 5%;
+    height: 7vh;
+    align-items: center;
+}
+.header-bar h1{
+    padding-right: 8%;
+}
+.header-bar a{
+    color: rgba(255, 255, 255, 0.4);
+}
+.header-bar a:hover {
+    color: lightgoldenrodyellow;
+    transition: linear 0.4s;
+}
