@@ -5,25 +5,41 @@
 * {
     font-family: "SN Pro", sans-serif;
     margin: 0;
+    
+}
+body{
+    background-color: lightgoldenrodyellow;
+    overflow-x: hidden;
 }
 wrap {
- color: lightgoldenrodyellow;   
+    color: lightgoldenrodyellow;   
 }
-/* -------------- Header Styling ------------- */
+div {
+    /*border: dashed blue 2px;*/
+    margin-left: 8%;
+    margin-top: 1%;
+    width: 84vw;
+}
+/* -------------- vwHeader Styling ------------- */
 h1{
-
+    font-size: 2.2em;
+    margin-right: 5vw;
 }
 h2 {
-
+    font-size: 1.75em;
+    margin: 1% 0;
 }
 h3 {
-    font-size: 1.3em;
+    font-size: 1.2em;
 }
 h4 {
-
+    margin: 1% 0;
+    font-size: 1.3em;
 }
 h5{
-
+    margin: 2% 0;
+    font-size: .9em;
+    
 }
 /* -------------- Header Bar Styling ------------- */
 .header-bar {
@@ -31,10 +47,16 @@ h5{
     color: white;
     display: flex;
     flex-direction: row;
-    padding-left: 8%;
-    gap: 5%;
+    gap: 3%;
     height: 7vh;
     align-items: center;
+    position: sticky;
+    overflow: hidden;
+    top: 0;
+    width: 100%;
+    margin-left: 0%;
+    margin-top: 0;
+    padding-left: 8%;
 }
 .header-bar h1{
     padding-right: 8%;
@@ -45,4 +67,57 @@ h5{
 .header-bar a:hover {
     color: lightgoldenrodyellow;
     transition: linear 0.4s;
+}
+/* -------------- Section Styling ------------- */
+.top-section {
+    margin-top: 3%;
+}
+/* -------------- Deadline Calendar Styling ------------- */
+table {
+    background-color: rgba(44, 44, 44,0.95);
+    color: white;
+    padding: 2%;
+    align-self: center;
+    border-radius: 25px;
+    width: 100%;
+}
+.deadline-table{
+    margin-left: 0%;
+    
+    overflow: hidden;
+}
+/* -------------- Task Card Styling ------------- */
+.checkbox{
+    width: 5%;
+}
+.task-display {
+    margin-left: 0;
+    display: flex;
+    gap: 2%;
+    align-content: center;
+}
+.task-card {
+    background-color: rgba(44, 44, 44,0.95);
+    border-radius: 10px;
+    color: white;
+    width: 30%;
+    margin-left: 0;
+    max-width: 250px;
+    padding: 2%;
+    line-height: 1.5;
+}
+.tag-container{
+    display: flex;
+    flex-direction: row;
+    margin-left: 0;
+    width: 100%;
+}
+.card-tags { /* Conditional Background Colours depending on completion & module */
+    background-color: lightgoldenrodyellow;
+    color:rgba(44, 44, 44,1);
+    border-radius: 20px;
+    width: fit-content;
+    padding: 0.5% 2%;
+    margin: 0.5%;
+    
 }
