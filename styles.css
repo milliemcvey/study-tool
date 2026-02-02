@@ -8,10 +8,11 @@
 }
 body{
     background-color: lightgoldenrodyellow;
+    background-image: linear-gradient(to right, rgb(255, 255, 165) , rgb(255, 255, 198));
     overflow-x: hidden;
 }
 wrap {
-    color: lightgoldenrodyellow;   
+    color: rgb(255, 255, 154);   
 }
 .main-content {
     /*border: dashed blue 2px;*/
@@ -19,6 +20,9 @@ wrap {
     margin-top: 1%;
     width: 84vw;
 } 
+a {
+    text-decoration: none;
+}
 /* -------------- Header Styling ------------- */
 h1{
     font-size: 2.2em;
@@ -26,7 +30,7 @@ h1{
 }
 h2 {
     font-size: 2.2em;
-    margin: 3% 0 2% 0;
+    margin: 0% 0 2% 0;
 }
 h3 {
     font-size: 1.75em;
@@ -43,7 +47,8 @@ h5{
 }
 /* -------------- Header Bar Styling ------------- */
 .header-bar {
-    background-color: rgb(44, 44, 44);
+    background-color: rgba(44, 44, 44,0.96);
+    box-shadow: 0 8px 15px rgba(0,0,0,0.3);
     color: white;
     display: flex;
     flex-direction: row;
@@ -58,6 +63,9 @@ h5{
     margin-top: 0;
     padding-left: 8%;
 }
+.header-bar img{
+    color: white;
+}
 .header-bar h1{
     padding-right: 8%;
 }
@@ -65,25 +73,36 @@ h5{
     color: rgba(255, 255, 255, 0.4);
 }
 .header-bar a:hover {
-    color: lightgoldenrodyellow;
+    color: rgb(255, 255, 154);
     transition: linear 0.4s;
 }
-/* -------------- Section Styling ------------- */
+/* -------------- Top Section Styling ------------- */
 .top-section {
-    margin-top: 3%;
+    display: flex;
+    flex-direction: row;
+    gap: 2vw;
+    flex-wrap: nowrap; /* ensures side-by-side layout */
+}
+.top-section-left {
+    width: 60%;
+    padding-left: 8vw;
+}
+.top-section-right {
+    width: 30%;
+    padding-right: 8vw;
+    padding-top: 0.5%;
 }
 /* -------------- Deadline Calendar Styling ------------- */
 .calendar-container {
-    width: 100%;
     margin-left: 0;
-    padding-left: 8vw;
+    width: 100%;
 }
 .calendar-grid {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     gap: 5px;
     margin-left: 0;
-    width: 84vw;
+    width: 100%;
     margin-bottom: 2%;
 }
 .day {
@@ -119,7 +138,7 @@ h5{
 }
 
 .day.date.has-task {
-    background-color: lightgoldenrodyellow; /* yellow */
+    background-color: rgb(255, 255, 154); /* yellow */
 }
 .header-cell{
     text-align: center;
@@ -128,37 +147,24 @@ h5{
     min-height: 20px;
 }
 /* -------------- Task Card Styling ------------- */
-.checkbox{
-    width: 11%;
-    background-color: lightgoldenrodyellow;
-    border-radius: 50px;
-    margin-left: 0;
-    margin-top: 0;
-}
 .task-display {
-    margin-left: 0;
-    display: flex;
-    gap: 2%;
     align-content: center;
 }
 .task-card {
     background-color: rgba(44, 44, 44,0.95);
     border-radius: 25px;
     color: white;
-    width: 30%;
     margin-left: 0;
-    max-width: 250px;
+    margin-bottom: 2%;
     padding: 2%;
     line-height: 1.5;
 }
 .tag-container{
-    display: flex;
-    flex-direction: row;
     margin-left: 0;
-    width: 100%;
+    display: flex;
 }
 .card-tags { /* Conditional Background Colours depending on completion & module */
-    background-color: lightgoldenrodyellow;
+    background-color: rgb(255, 255, 154);
     color:rgba(44, 44, 44,1);
     border-radius: 20px;
     width: fit-content;
@@ -182,13 +188,10 @@ h5{
     margin-top: 0;
     padding-left: 8%;
 }
-.header-bar h1{
-    padding-right: 8%;
-}
-.header-bar a{
+.footer-bar a{
     color: rgba(255, 255, 255, 0.4);
 }
-.header-bar a:hover {
+.footer-bar a:hover {
     color: lightgoldenrodyellow;
     transition: linear 0.4s;
 }

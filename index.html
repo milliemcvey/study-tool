@@ -9,93 +9,66 @@
 <body>
     <div class="header-bar">
         <h1><wrap>Study</wrap> Tool</h1>
-        <a><h4>Tasks</h4></a>
+        <a href=""><h4>Tasks</h4></a>
         <a><h4>Goals</h4></a>
         <a><h4 class="header-btn">Study Timer</h4></a>
         <h4 class="header-btn">Average Grade: <wrap>##%</wrap></h4>
-    
     </div>
-    <div class="top-section">
-        <h2 class="main-content">Deadline Calendar </h2> <!--FR1-->
-        <div class="deadline-table">
-            <div class="calendar-container">
-                <h3 id="month-year"></h3>
-                <div class="calendar-grid" id="calendar"></div>
-            </div>
 
-            <div class="task-adder">
-                <h3>Add Task</h3>
-                <input type="text" id="task-name" placeholder="Task name">
-                <input type="date" id="task-date">
-                <button id="add-task">Add Task</button>
+    <h2 class="main-content">Deadline Calendar </h2> <!--FR1-->
+
+    <div class="top-section"> 
+
+        <div class="top-section-left"> 
+            <div class="deadline-table">
+                <div class="calendar-container">
+                    <h2 id="month-year"></h2>
+                    <div class="calendar-grid" id="calendar"></div>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="main-content">
-        <h2>Revision Tasks </h2> <!--FR2&3-->
+
+        <div class="top-section-right">
+            <h2>Revision Tasks </h2> <!--FR2&3-->
             <div class="task-display">
                 <div class="task-card">
-                    <div class="checkbox">[]</div>
                     <h4>Task Title</h4>
-                    <div class="tag-container">
-                        <h5 class="card-tags">"Type"</h5>
-                    <h5 class="card-tags">"Module"</h5>
-                    </div>
+                        <div class="tag-container">
+                            <h5 class="card-tags">"Type"</h5>
+                            <h5 class="card-tags">"Module"</h5>
+                        </div>
                     <h5>Due: ##/##/####</h5>
                     <p> Description of Task Goes Here</p>
                 </div>
                 <div class="task-card">
-                    <div class="checkbox">[]</div>
                     <h4>Task Title</h4>
-                    <div class="tag-container">
-                        <h5 class="card-tags">"Type"</h5>
-                    <h5 class="card-tags">"Module"</h5>
-                    </div>
+                        <div class="tag-container">
+                            <h5 class="card-tags">"Type"</h5>
+                            <h5 class="card-tags">"Module"</h5>
+                        </div>
                     <h5>Due: ##/##/####</h5>
                     <p> Description of Task Goes Here</p>
                 </div>
                 <div class="task-card">
-                    <div class="checkbox">[]</div>
                     <h4>Task Title</h4>
-                    <div class="tag-container">
-                        <h5 class="card-tags">"Type"</h5>
-                    <h5 class="card-tags">"Module"</h5>
-                    </div>
-                    <h5>Due: ##/##/####</h5>
-                    <p> Description of Task Goes Here</p>
-                </div>
-                <div class="task-card">
-                    <div class="checkbox">[]</div>
-                    <h4>Task Title</h4>
-                    <div class="tag-container">
-                        <h5 class="card-tags">"Type"</h5>
-                    <h5 class="card-tags">"Module"</h5>
-                    </div>
-                    <h5>Due: ##/##/####</h5>
-                    <p> Description of Task Goes Here</p>
-                </div>
-                <div class="task-card">
-                    <div class="checkbox">[]</div>
-                    <h4>Task Title</h4>
-                    <div class="tag-container">
-                        <h5 class="card-tags">"Type"</h5>
-                    <h5 class="card-tags">"Module"</h5>
-                    </div>
-                    <h5>Due: ##/##/####</h5>
-                    <p> Description of Task Goes Here</p>
-                </div>
-                <div class="task-card">
-                    <div class="checkbox">[]</div>
-                    <h4>Task Title</h4>
-                    <div class="tag-container">
-                        <h5 class="card-tags">"Type"</h5>
-                    <h5 class="card-tags">"Module"</h5>
-                    </div>
+                        <div class="tag-container">
+                            <h5 class="card-tags">"Type"</h5>
+                            <h5 class="card-tags">"Module"</h5>
+                        </div>
                     <h5>Due: ##/##/####</h5>
                     <p> Description of Task Goes Here</p>
                 </div>
             </div>
-        <h3>Overdue Tasks</h3> <!--FR4, Add FR5 (Deadline Notifications)-->
+        </div>
+
+    </div>
+    <div class="task-adder">
+        <h3>Add Task</h3>
+        <input type="text" id="task-name" placeholder="Task name">
+        <input type="date" id="task-date">
+        <button id="add-task">Add Task</button>
+    </div>
+       
     </div>
     <div class="main-content">
         <h2>Goals</h2><!--FR6-->
