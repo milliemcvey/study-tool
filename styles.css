@@ -13,27 +13,28 @@ body{
 wrap {
     color: lightgoldenrodyellow;   
 }
-div {
+.main-content {
     /*border: dashed blue 2px;*/
     margin-left: 8%;
     margin-top: 1%;
     width: 84vw;
-}
-/* -------------- vwHeader Styling ------------- */
+} 
+/* -------------- Header Styling ------------- */
 h1{
     font-size: 2.2em;
     margin-right: 5vw;
 }
 h2 {
-    font-size: 1.75em;
-    margin: 1% 0;
+    font-size: 2.2em;
+    margin: 3% 0 2% 0;
 }
 h3 {
-    font-size: 1.2em;
+    font-size: 1.75em;
+    margin-bottom: 1%;
 }
 h4 {
     margin: 1% 0;
-    font-size: 1.3em;
+    font-size: 1.4em;
 }
 h5{
     margin: 2% 0;
@@ -72,17 +73,59 @@ h5{
     margin-top: 3%;
 }
 /* -------------- Deadline Calendar Styling ------------- */
-table {
-    background-color: rgba(44, 44, 44,0.95);
-    color: white;
-    padding: 2%;
-    align-self: center;
-    border-radius: 25px;
+.calendar-container {
     width: 100%;
+    margin-left: 0;
+    padding-left: 8vw;
 }
-.deadline-table{
-    margin-left: 0%;
-    overflow: hidden;
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+    margin-left: 0;
+    width: 84vw;
+    margin-bottom: 2%;
+}
+.day {
+    border: 1px solid rgb(44,44,44);
+    border-radius: 10px;
+    padding: 10px;
+    min-height: 60px;
+    margin-left: 0; /* let the grid control the column width */
+}
+.task {
+  color:rgb(44, 44, 44);
+  font-size: 2.5em;
+  padding: 2px 4px;
+  margin-top: 4px;
+  font-size: 12px;
+  border-radius: 3px;
+}
+.task-adder{
+    margin-left: 8vw;
+    margin:  1% 1% 1% 8vw;
+    padding: .5% 2% .5% 1.5% ;
+    background-color:rgba(44, 44, 44,0.95);
+    width: 20%;
+    border-radius: 20px;
+    color: white;
+}
+.day.blank {
+    background-color: rgba(44, 44, 44,0.25); 
+}
+
+.day.date {
+    background-color: white; /* white */
+}
+
+.day.date.has-task {
+    background-color: lightgoldenrodyellow; /* yellow */
+}
+.header-cell{
+    text-align: center;
+    font-size: 1.35em;
+    height: auto;
+    min-height: 20px;
 }
 /* -------------- Task Card Styling ------------- */
 .checkbox{
@@ -122,4 +165,30 @@ table {
     padding: 0.5% 2%;
     margin: 0.5%;
     
+}
+/* -------------- Footer Bar Styling ------------- */
+.footer-bar {
+    background-color: rgb(44, 44, 44);
+    color: white;
+    display: flex;
+    flex-direction: row;
+    gap: 3%;
+    height: 15vh;
+    align-items: center;
+    overflow: hidden;
+    bottom: 0;
+    width: 100%;
+    margin-left: 0%;
+    margin-top: 0;
+    padding-left: 8%;
+}
+.header-bar h1{
+    padding-right: 8%;
+}
+.header-bar a{
+    color: rgba(255, 255, 255, 0.4);
+}
+.header-bar a:hover {
+    color: lightgoldenrodyellow;
+    transition: linear 0.4s;
 }
