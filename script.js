@@ -1,4 +1,4 @@
-// ---------------------- Element References ----------------------
+//  Element References 
 const calendar = document.getElementById("calendar");
 const monthYear = document.getElementById("month-year");
 const addTaskBtn = document.getElementById("add-task");
@@ -14,7 +14,7 @@ let currentMonth = currentDate.getMonth();
 let currentYear = currentDate.getFullYear();
 
 
-// ---------------------- Calendar Generator ----------------------
+//  Calendar Generator 
 function loadCalendar(month = currentMonth, year = currentYear) {
     calendar.innerHTML = "";
 
@@ -82,7 +82,7 @@ function loadCalendar(month = currentMonth, year = currentYear) {
 }
 
 
-// ---------------------- Add Task to Calendar ----------------------
+//  Add Task to Calendar 
 function addTask() {
     const taskName = taskNameInput.value.trim();
     const taskDate = taskDateInput.value;
@@ -109,8 +109,14 @@ function addTask() {
 }
 
 
-// ---------------------- Event Listeners ----------------------
+//  Event Listeners 
 addTaskBtn.addEventListener("click", addTask);
 
 // Load calendar on page load
 loadCalendar();
+
+//-----------------------------------------------------------------------------
+const oneOne = 70;
+const twoOne = 60;
+const twoTwo = 50;
+
