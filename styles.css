@@ -1,3 +1,13 @@
+/*------------INDEX------------
+1. Imports & Fonts
+2. Universal Styling
+3. Headings Styling
+4. Header Bar Styling
+5. Top Section
+6. Deadline Calendar
+7. Study Timer
+8. Footer Bar 
+
 @import url('https://fonts.googleapis.com/css2?family=SN+Pro:ital,wght@0,200..900;1,200..900&display=swap');
 
 
@@ -23,7 +33,7 @@ wrap {
 a {
     text-decoration: none;
 }
-/* -------------- Header Styling ------------- */
+/* -------------- Headings Styling ------------- */
 h1{
     font-size: 2.2em;
     margin-right: 5vw;
@@ -172,6 +182,7 @@ h5{
     margin: 0.5%;
     
 }
+
 /* -------------- Footer Bar Styling ------------- */
 .footer-bar {
     background-color: rgb(44, 44, 44);

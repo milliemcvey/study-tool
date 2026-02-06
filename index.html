@@ -9,9 +9,10 @@
 <body>
     <div class="header-bar">
         <h1><wrap>Study</wrap> Tool</h1>
-        <a href=""><h4>Tasks</h4></a>
-        <a><h4>Goals</h4></a>
-        <a><h4 class="header-btn">Study Timer</h4></a>
+        <a href="#revision-tasks-sidebar"><h4>Tasks</h4></a>
+        <a href="#goals"><h4>Goals</h4></a>
+        <a href="#grades"><h4>Grades</h4></a>
+        <a href="#study-timer"><h4 class="header-btn">Study Timer</h4></a>
         <h4 class="header-btn">Average Grade: <wrap>##%</wrap></h4>
     </div>
 
@@ -19,7 +20,7 @@
 
     <div class="top-section"> 
 
-        <div class="top-section-left"> 
+        <div class="top-section-left" id="deadline-calendar"> 
             <div class="deadline-table">
                 <div class="calendar-container">
                     <h2 id="month-year"></h2>
@@ -28,7 +29,7 @@
             </div>
         </div>
 
-        <div class="top-section-right">
+        <div class="top-section-right" id="revision-tasks-sidebar">
             <h2>Revision Tasks </h2> <!--FR2&3-->
             <div class="task-display">
                 <div class="task-card">
@@ -70,14 +71,14 @@
     </div>
        
     </div>
-    <div class="main-content">
+    <div class="main-content" id="goals">
         <h2>Goals</h2><!--FR6-->
     </div>
-    <div class="main-content">
+    <div class="main-content" id="grades">
         <h2>Grades</h2><!--FR7-->
     </div>
-    <div class="main-content">
-        <h2>Revision Timer</h2><!--FR8-->
+    <div class="main-content" id="study-timer">
+        <h2>Study Timer</h2><!--FR8-->
     </div>
     <div class="footer-bar">
         <div class="footer-left">
