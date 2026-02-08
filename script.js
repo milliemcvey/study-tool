@@ -23,8 +23,7 @@ function loadCalendar(month = currentMonth, year = currentYear) {
 
     monthYear.textContent = new Date(year, month).toLocaleString("default", {
         month: "long",
-        year: "numeric"
-    });
+        year: "numeric"});
 
     // Weekday headers (Monday → Sunday)
     const weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
@@ -32,8 +31,7 @@ function loadCalendar(month = currentMonth, year = currentYear) {
         const header = document.createElement("div");
         header.classList.add("day", "blank", "header-cell");
         header.innerHTML = `<strong>${day}</strong>`;
-        calendar.appendChild(header);
-    });
+        calendar.appendChild(header);});
 
     // Convert JS Sunday=0 → Monday=0
     const firstDayIndex = (firstDay.getDay() + 6) % 7;
