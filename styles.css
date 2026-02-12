@@ -17,7 +17,7 @@
     font-family: "SN Pro", sans-serif;
     margin: 0;
     max-width: 100vw;
-    overflow: hidden;
+    overflow-x: hidden;
 }
 body{
     background-color: lightgoldenrodyellow;
@@ -259,11 +259,17 @@ h5{
     margin-left: 0%;
     margin-top: 0;
     padding-left: 8%;
+    font-size: 1.35em;
+    line-height: 1.4;
 }
 .footer-bar a{
     color: rgba(255, 255, 255, 0.4);
+
 }
 .footer-bar a:hover {
     color: lightgoldenrodyellow;
     transition: linear 0.4s;
+}
+.footer-right{
+    padding: 20%;
 }
