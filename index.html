@@ -3,94 +3,280 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study Tool Homepage</title>
     <link rel="stylesheet" href="styles.css">
-    <title>Homepage</title>
 </head>
 <body>
-    <div class="header-bar">
+    <!-- HEADER -->
+    <header class="header-bar">
         <h1><wrap>Study</wrap> Tool</h1>
-        <a href="#revision-tasks-sidebar"><h4>Tasks</h4></a>
-        <a href="#goals"><h4>Goals</h4></a>
-        <a href="#grades"><h4>Grades</h4></a>
-        <a href="#study-timer"><h4 class="header-btn">Study Timer</h4></a>
-        <h4 class="header-btn">Average Grade: <wrap>##%</wrap></h4>
-    </div>
+            <a href="#revision-tasks-sidebar"><h4>Tasks</h4></a>
+            <a href="#goals"><h4>Goals</h4></a>
+            <a href="#grades"><h4>Grades</h4></a>
+            <a href="#study-timer"><h4 class="header-btn">Study Timer</h4></a>
+            <h4 class="btn">Average Grade: <wrap id="average-grade">--%</wrap></h4>
+    </header>
 
-    <h2 class="main-content">Deadline Calendar </h2> <!--FR1-->
+    <!-- NOTIFICATIONS (FR4 & FR5) -->
+    <section class="notifications main-content" id="notifications">
+        <h2>Notifications</h2>
+        <div class="notification-panels">
+            <div class="notification-card" id="overdue-tasks">
+                <h3>Overdue Revision Tasks</h3>
+                <ul id="overdue-task-list">
+                    <!--JS -->
+                </ul>
+                <p class="notification-empty" id="overdue-empty">No overdue tasks. Great job staying on track.</p>
+            </div>
+            <div class="notification-card" id="upcoming-deadlines">
+                <h3>Upcoming Deadlines (Next 30 Days)</h3>
+                <ul id="upcoming-deadline-list">
+                    <!--JS -->
+                </ul>
+                <p class="notification-empty" id="upcoming-empty">No upcoming deadlines in the next 30 days.</p>
+            </div>
+        </div>
+    </section>
 
-    <div class="top-section"> 
-
-        <div class="top-section-left" id="deadline-calendar"> 
+    <section class="top-section">
+        
+        <!-- CALENDAR (FR1) -->
+        <div class="top-section-left" id="deadline-calendar">
             <div class="deadline-table">
-                <div class="calendar-container">
-                    <h2 id="month-year"></h2>
-                    <div class="calendar-grid" id="calendar"></div>
+                <div class="calendar-header">
+                    <button id="prev-month" class="month-arrow" aria-label="Previous month">&lt;</button>
+                    <h2 id="month-year">Month Year</h2>
+                    <button id="next-month" class="month-arrow" aria-label="Next month">&gt;</button>
+                </div>
+                <div class="calendar-grid" id="calendar">
+                    <!-- Calendar cells populated by JS -->
                 </div>
             </div>
         </div>
 
-        <div class="top-section-right" id="revision-tasks-sidebar">
-            <h2>Revision Tasks </h2> <!--FR2&3-->
-            <div class="task-display">
-                <div class="task-card">
+        <!-- REVISION TASKS (FR2, FR3, FR4, FR5) -->
+        <div id="revision-tasks-sidebar">
+            <h2>Revision Tasks</h2>
+            <div class="task-filters">
+                <label for="task-sort">Sort by:</label>
+                <select id="task-sort">
+                    <option value="dueDateAsc">Due Date (Earliest First)</option>
+                    <option value="dueDateDesc">Due Date (Latest First)</option>
+                    <option value="completion">Completion Status</option>
+                </select>
+            </div>
+            <div class="task-display" id="task-list">
+                <!-- Task cards populated by JS, ordered by due date (FR3) -->
+                <!-- Example structure:
+                <div class="task-card" data-due-date="2026-03-01">
                     <h4>Task Title</h4>
-                        <div class="tag-container">
-                            <h5 class="card-tags">"Type"</h5>
-                            <h5 class="card-tags">"Module"</h5>
-                        </div>
-                    <h5>Due: ##/##/####</h5>
-                    <p> Description of Task Goes Here</p>
+                    <div class="tag-container">
+                        <h5 class="card-tags">Type: Reading</h5>
+                        <h5 class="card-tags">Module: COMP101</h5>
+                    </div>
+                    <h5>Due: 01/03/2026</h5>
+                    <h5 class="completion-status">Status: Not Completed</h5>
+                    <p>Description of Task Goes Here</p>
+                    <a href="#" class="task-link" target="_blank" rel="noopener">Resource Link</a>
+                    <button class="mark-complete-btn">Mark as Completed</button>
                 </div>
-                <div class="task-card">
-                    <h4>Task Title</h4>
-                        <div class="tag-container">
-                            <h5 class="card-tags">"Type"</h5>
-                            <h5 class="card-tags">"Module"</h5>
-                        </div>
-                    <h5>Due: ##/##/####</h5>
-                    <p> Description of Task Goes Here</p>
+                -->
+            </div>
+            <div class="task-adder main-content" id="add-task-section">
+            <h2>Add Revision Task</h2>
+                <form id="task-form" novalidate>
+                    <div class="form-row">
+                        <label for="task-name">Task Name</label>
+                        <input type="text" id="task-name" name="task-name" placeholder="e.g. Revise Set Theory" required>
+                    </div>
+                    <div class="form-row">
+                        <label for="task-description">Description</label>
+                        <textarea id="task-description" name="task-description" placeholder="Short description (no HTML tags allowed)" required></textarea>
+                    </div>
+                    <div class="form-row">
+                        <label for="task-type">Task Type</label>
+                        <select id="task-type" name="task-type">
+                            <option value="reading">Reading</option>
+                            <option value="practice">Practice Questions</option>
+                            <option value="summary">Write Summary Notes</option>
+                            <option value="past-paper">Past Paper</option>
+                            <option value="project">Project Work</option>
+                        </select>
+                    </div>
+                    <div class="form-row">
+                        <label for="task-date">Due Date</label>
+                        <input type="date" id="task-date" name="task-date" required>
+                        <small class="hint">Due date cannot be in the past.</small>
+                    </div>
+                    <div class="form-row btn">
+                        <button type="submit" id="add-task">Add Task</button>
+                    </div>
+                    <p class="form-error" id="task-form-error"></p>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- ADD REVISION TASK FORM (FR2) -->
+    
+
+    <!-- GOALS & OVERALL GRADE FEEDBACK (FR6) -->
+    <section class="main-content" id="goals">
+        <h2>Grade Goal & Progress</h2>
+        <div class="goals-container">
+            <div class="goal-selector">
+                <h3>Set Final Overall Grade Goal</h3>
+                <label for="grade-goal">Target Classification</label>
+                <select id="grade-goal" name="grade-goal">
+                    <option value="third">Third Class (40–49)</option>
+                    <option value="2:2">2:2 (50–59)</option>
+                    <option value="2:1" selected>2:1 (60–69)</option>
+                    <option value="first">First Class (70+)</option>
+                </select>
+                <p class="hint">You can change this goal at any time.</p>
+            </div>
+
+            <div class="goal-visual-feedback">
+                <h3>Progress Towards Goal</h3>
+                <div class="progress-summary">
+                    <p>Current Overall Average: <span id="overall-average">--%</span></p>
+                    <p>Target Range: <span id="target-range">60–69%</span></p>
+                    <p>Status: <span id="goal-status">No marks entered yet.</span></p>
                 </div>
-                <div class="task-card">
-                    <h4>Task Title</h4>
-                        <div class="tag-container">
-                            <h5 class="card-tags">"Type"</h5>
-                            <h5 class="card-tags">"Module"</h5>
-                        </div>
-                    <h5>Due: ##/##/####</h5>
-                    <p> Description of Task Goes Here</p>
+                <div class="progress-bar-wrapper">
+                    <div class="progress-bar-background">
+                        <div class="progress-bar-fill" id="overall-progress-bar"></div>
+                    </div>
                 </div>
             </div>
         </div>
+    </section>
 
-    </div>
-    <div class="task-adder">
-        <h3>Add Task:</h3>
-        <input type="text" id="task-name" placeholder="Task name">
-        <input type="date" id="task-date">
-        <button id="add-task">Add Task</button>
-    </div>
-    <div class="main-content" id="grades">
-        <h2>Grades</h2><!--FR7-->
-    </div>
-    <div class="main-content" id="study-timer">
-        <h2>Study Timer</h2><!--FR8-->
-    </div>
-    <div class="footer-bar">
+    <!-- GRADES SECTION (FR7) -->
+    <section class="main-content" id="grades">
+        <h2>Grades</h2>
+        <div class="grades-layout">
+            <!-- MODULE GRADES TABLE -->
+            <div class="module-grades">
+                <h3>Module Overview</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Module Code</th>
+                            <th>Module Name</th>
+                            <th>Final Module Grade</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="module-grades-body">
+                        <!-- Populated from JSON + user marks by JS -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- ENTER GRADES FORM -->
+            <div class="grade-entry">
+                <h3>Enter Assignment / Exam Marks</h3>
+                <form id="grade-form" novalidate>
+                    <div class="form-row">
+                        <label for="grade-module">Module</label>
+                        <select id="grade-module" name="grade-module" required>
+                            <!-- Populated from JSON modules by JS -->
+                        </select>
+                    </div>
+
+                    <div class="form-row">
+                        <label for="grade-component">Assessment Component</label>
+                        <select id="grade-component" name="grade-component" required>
+                            <!-- Populated based on selected module (coursework/exam components) -->
+                        </select>
+                    </div>
+
+                    <div class="form-row">
+                        <label for="grade-mark">Mark (0–100)</label>
+                        <input type="number" id="grade-mark" name="grade-mark" min="0" max="100" required>
+                    </div>
+
+                    <div class="form-row">
+                        <button type="submit" id="add-grade">Save Mark</button>
+                    </div>
+
+                    <p class="form-error" id="grade-form-error"></p>
+                </form>
+
+                <div class="grade-component-list">
+                    <h4>Component Breakdown</h4>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Component</th>
+                                <th>Weighting</th>
+                                <th>Mark</th>
+                                <th>Weighted Contribution</th>
+                            </tr>
+                        </thead>
+                        <tbody id="component-grades-body">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- STUDY TIMER (FR8) -->
+    <section class="main-content" id="study-timer">
+        <h2>Study Focus Timer</h2>
+        <div class="timer-container">
+            <div class="timer-settings">
+                <h3>Set Focus Duration</h3>
+                <label for="timer-length">Focus Time (minutes)</label>
+                <select id="timer-length" name="timer-length">
+                    <option value="15">15 minutes</option>
+                    <option value="20">20 minutes</option>
+                    <option value="25">25 minutes</option>
+                    <option value="30">30 minutes</option>
+                    <option value="35">35 minutes</option>
+                    <option value="40">40 minutes</option>
+                </select>
+                <p class="hint">Choose a focus block between 15 and 40 minutes.</p>
+            </div>
+
+            <div class="timer-display-panel">
+                <h3>Countdown</h3>
+                <div class="timer-display" id="timer-display">
+                    00:00
+                </div>
+                <div class="timer-controls">
+                    <button id="timer-start">Start</button>
+                    <button id="timer-pause">Pause</button>
+                    <button id="timer-reset">Reset</button>
+                </div>
+                <audio id="timer-sound" src="timer-sound.mp3" preload="auto"></audio>
+                <p class="hint">A sound will play when the timer reaches zero.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer-bar">
         <div class="footer-left">
-             <ul>
-                <li><a href="" alt="">Tasks</a></li>
-                <li><a href="" alt="">Goals</a></li>
-                <li><a href="" alt="">Study Timer</a></li>
+            <ul>
+                <li><a href="#revision-tasks-sidebar">Tasks</a></li>
+                <li><a href="#goals">Goals</a></li>
+                <li><a href="#study-timer">Study Timer</a></li>
             </ul>
         </div>
         <div class="footer-right">
             <ul>
                 <li>Millie McVey</li>
                 <li>1183086</li>
-                <li><a href="https://github.com/milliemcvey" alt="">Github Profile</a></li>
+                <li><a href="https://github.com/milliemcvey" target="_blank" rel="noopener">Github Profile</a></li>
             </ul>
         </div>
-    </div>
-    <script src="script.js"></script> <!--Connects Javascript-->
+    </footer>
+
+    <!-- MAIN SCRIPT (connects JSON, logic, and UI) -->
+    <script src="script.js"></script>
 </body>
 </html>

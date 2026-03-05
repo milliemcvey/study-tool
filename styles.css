@@ -8,121 +8,176 @@
 7. Study Timer
 8. Goals Section
 9. Footer Bar 
+*/
 
-@import url('https://fonts.googleapis.com/css2?family=SN+Pro:ital,wght@0,200..900;1,200..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400..700;1,400..700&family=Cal+Sans&display=swap');
 
+:root { /*Easier to change colours at later point*/
+    --colour-1: rgb(164, 101, 151);   /* Primary */
+    --colour-2: rgb(252, 54, 146);   /* Secondary */
+    --white: rgb(241, 233, 218);   /* Relative White */
+    --black: 32, 17, 29;  /* Relative B lack */
+    --background: rgb(44, 25, 40);   /* Background */
+    --background-light: rgb(77, 45, 70);   /* Background but lighter */
+    --background-lightest: rgb(78, 44, 70);   /* Background but lighter */
+
+}
 
 /* -------------- Universal Styling ------------- */
-* {
-    font-family: "SN Pro", sans-serif;
+body {
+    background-image: linear-gradient(var(--background),var(--background-lightest));
+    color: var(--white);
+    font-family: "Arimo", sans-serif;
+    font-size: 1.25rem;
+    overflow-x: hidden;
     margin: 0;
-    max-width: 100vw;
-    overflow-x: hidden;
 }
-body{
-    background-color: lightgoldenrodyellow;
-    background-image: linear-gradient(to right, rgb(255, 255, 165) , rgb(255, 255, 198));
-    overflow-x: hidden;
-}
-wrap {
-    color: rgb(255, 255, 154);   
-}
-.main-content {
-    /*border: dashed blue 2px;*/
-    margin-left: 8%;
-    margin-top: 1%;
-    width: 84vw;
-} 
-a {
-    text-decoration: none;
+section {
+    margin: 4vh 14vw;
 }
 /* -------------- Headings Styling ------------- */
-h1{
-    font-size: 2.2em;
-    margin-right: 5vw;
+h1 {
+    font-family: "Cal Sans", sans-serif;
+    font-size: 2.75rem;
+    letter-spacing: 3px;
 }
 h2 {
-    font-size: 2.2em;
-    margin: 0% 0 2% 0;
+    font-family: "Cal Sans", sans-serif;
+    font-size: 2.15rem;
+    letter-spacing: 2px;
 }
 h3 {
-    font-size: 1.75em;
-    margin-bottom: 1%;
+    font-family: "Cal Sans", sans-serif;
+    font-size: 1.5rem;
+    letter-spacing: 1.5px;
 }
-h4 {
-    margin: 1% 0;
-    font-size: 1.4em;
-}
-h5{
-    margin: 2% 0;
-    font-size: .9em;
-    
-}
+
 /* -------------- Header Bar Styling ------------- */
-.header-bar {
-    background-color: rgba(44, 44, 44,0.96);
-    box-shadow: 0 8px 15px rgba(0,0,0,0.3);
-    color: white;
+header {
     display: flex;
-    flex-direction: row;
     gap: 3%;
-    height: 7vh;
-    align-items: center;
-    position: sticky;
-    overflow: hidden;
-    top: 0;
+    margin: 0;
+    padding: 0 5vw;
     width: 100%;
-    margin-left: 0%;
-    margin-top: 0;
-    padding-left: 8%;
+    position: sticky;
+    top: 0;
+    left: 0;
+    background-color: rgba(var(--black), 0.8);
+    align-items: center;
+    border-bottom-left-radius: 25px;
+    border-bottom-right-radius: 25px;
+    box-shadow: #1d0f1a;
+    backdrop-filter: blur(10px);
+    z-index: 1000;
+
 }
-.header-bar img{
-    color: white;
+header h1{
+    padding-right: 35%;
 }
-.header-bar h1{
-    padding-right: 8%;
+header a{
+    text-decoration: none;
+    color: var(--white);
+    font-size: 1.4rem;
 }
-.header-bar a{
-    color: rgba(255, 255, 255, 0.4);
+header a:hover{
+    color: var(--colour-2);
+    transition: linear 0.5s;
 }
-.header-bar a:hover {
-    color: rgb(255, 255, 154);
-    transition: linear 0.4s;
+.btn{
+    background-color: var(--colour-2);
+    padding: 0.5% 1%;
+    border-radius: 10px;
+    font-size: 1.3rem;
+    width: fit-content;
+    align-content: center;
 }
-/* -------------- Top Section Styling ------------- */
-.top-section {
+/* -------------- Notifications Styling ------------- */
+#notifications{
+    background-color: var(--background-light);
+    padding: 1% 3%;
+    border-radius: 25px;
+}
+#revision-tasks-sidebar {
+    background-color: var(--background-light);
+    padding: 0 3% 2% 3%;
+    border-radius: 25px;
+    align-content: center;
+    height: 75vh;
+}
+.task-form {
+    line-height: 1.5%;
+}
+#task-form {
     display: flex;
-    flex-direction: row;
-    gap: 2vw;
-    flex-wrap: nowrap; /* ensures side-by-side layout */
+    flex-direction: column;
+    gap: 1.2rem;
+    padding: 2rem;
+    border-radius: 12px;
+
+    background: rgba(var(--black), 0.35);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+
+    border: 1px solid rgba(var(--white), 0.15);
 }
-/*Media Queries*/
-@media screen and (max-width: 1350px) {
-    .top-section{
-        font-size: 1em;
-        flex-direction: column;
-    }
-    .top-section-left{
-        width: 100%;
-    }
-    .top-section-right{
-        width: 100%;
-        padding-left: 8vw;
-    }
-    .calendar-grid {
-        width: 100%;
-    }
+.form-row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
 }
-.top-section-left {
-    width: 50%;
-    padding-left: 8vw;
+.form-row label {
+    font-weight: 600;
+    color: var(--white);
+    font-size: 0.95rem;
 }
-.top-section-right {
-    width: 30%;
-    padding-right: 8vw;
-    padding-top: 0.5%;
+#task-form input, #task-form textarea, #task-form select {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    border-radius: 8px;
+
+    background: rgba(var(--white), 0.08);
+    border: 1px solid rgba(var(--white), 0.2);
+    color: var(--white);
+
+    font-size: 0.95rem;
+    outline: none;
+}
+
+#task-form input:focus, #task-form textarea:focus, #task-form select:focus {
+    border-color: var(--colour-2);
+    background: rgba(var(--white), 0.15);
+}
+#add-task {
+    background: var(--colour-2);
+    color: var(--white);
+    padding: 0.9rem 1.4rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+#add-task:hover {
+    background: var(--colour-1);
+    transform: translateY(-2px);
 }
 /* -------------- Deadline Calendar Styling ------------- */
+.month-arrow {
+    background-color: var(--colour-2);
+    border: none;
+    border-radius: 25px;
+    font-size: 1.5rem;
+    width: 3.5%;
+    height: 2.5%;
+    color: var(--white);
+}
+.calendar-header{
+    display: flex;
+    align-items: center;
+    gap: 2%;
+    justify-content: center;
+}
 .calendar-container {
     margin-left: 0;
     width: 100%;
@@ -150,15 +205,6 @@ h5{
   font-size: 12px;
   border-radius: 3px;
 }
-.task-adder{
-    margin-left: 8vw;
-    margin:  1% 1% 1% 8vw;
-    padding: .5% 2% .5% 1.5% ;
-    background-color:rgba(44, 44, 44,0.95);
-    width: 20%;
-    border-radius: 20px;
-    color: white;
-}
 .day.blank {
     background-color: rgba(44, 44, 44,0.25); 
 }
@@ -174,102 +220,4 @@ h5{
     height: auto;
     min-height: 20px;
 }
-/* -------------- Task Card Styling ------------- */
-.task-display {
-    align-content: center;
-}
-.task-card {
-    background-color: rgba(44, 44, 44,0.95);
-    border-radius: 25px;
-    color: white;
-    margin-left: 0;
-    margin-bottom: 2%;
-    padding: 2%;
-    line-height: 1.5;
-}
-.tag-container{
-    margin-left: 0;
-    display: flex;
-}
-.card-tags { /* Conditional Background Colours depending on completion & module */
-    background-color: rgb(255, 255, 154);
-    color:rgba(44, 44, 44,1);
-    border-radius: 20px;
-    width: fit-content;
-    padding: 0.5% 2%;
-    margin: 0.5%;
-    
-}
-/* -------------- Goals Section ----------------*/
-#goals {
-    background-color:rgb(44, 44, 44);
-    padding: 3% 1% 1% 8vw;
-    margin: 3% 0;
-    width: 100%;
-    color: white;
-}
-.goal-setter{
-    margin:  1% 1% 1% 0;
-    padding: .5% 2% .5% 1.5% ;
-    background-color:rgb(255, 255, 154);
-    width: 14%;
-    border-radius: 20px;
-    color: rgb(44,44,44);
-    height: 20%;
-    align-content: center;
-}
-.goal-setter h3 {
-    padding: 2%;
-    padding-left: 0;
-}
-.grade-card-container{
-    display: flex;
-
-}
-.grade-card{
-    /*Styling*/
-    background-color: rgba(255, 255, 154,0.4);
-    color: rgba(255, 255, 255, 0.4);
-    border-radius: 25px;
-    /*Formatting*/
-    width: 15%;
-    padding: 2%;
-    margin: 2%;
-    margin-left: 0;
-    text-align: center;
-}
-.grade-card h3 {
-    font-size: 4.5em;
-}
-.grade-card h4 {
-    font-size: 2em;
-}
 /* -------------- Footer Bar Styling ------------- */
-.footer-bar {
-    background-color: rgb(44, 44, 44);
-    color: white;
-    display: flex;
-    flex-direction: row;
-    gap: 3%;
-    height: 15vh;
-    align-items: center;
-    overflow: hidden;
-    bottom: 0;
-    width: 100%;
-    margin-left: 0%;
-    margin-top: 0;
-    padding-left: 8%;
-    font-size: 1.35em;
-    line-height: 1.4;
-}
-.footer-bar a{
-    color: rgba(255, 255, 255, 0.4);
-
-}
-.footer-bar a:hover {
-    color: lightgoldenrodyellow;
-    transition: linear 0.4s;
-}
-.footer-right{
-    padding: 20%;
-}
