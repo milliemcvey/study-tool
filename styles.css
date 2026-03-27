@@ -16,7 +16,7 @@
     --colour-1: rgb(164, 101, 151);   /* Primary */
     --colour-2: rgb(252, 54, 146);   /* Secondary */
     --white: rgb(241, 233, 218);   /* Relative White */
-    --black: 32, 17, 29;  /* Relative B lack */
+    --black: 32, 17, 29;  /* Relative Black */
     --background: rgb(44, 25, 40);   /* Background */
     --background-light: rgb(77, 45, 70);   /* Background but lighter */
     --background-lightest: rgb(78, 44, 70);   /* Background but lighter */
@@ -191,7 +191,7 @@ header a:hover{
     margin-bottom: 2%;
 }
 .day {
-    border: 1px solid rgb(44,44,44);
+    border: 1px var(--background);
     border-radius: 10px;
     padding: 10px;
     min-height: 60px;
