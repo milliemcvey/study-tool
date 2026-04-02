@@ -129,7 +129,7 @@ function loadCalendar(month = currentMonth, year = currentYear) {
         renderTasksOnCalendar();
     }
 
-/*----- MONTH SWITCHING BUTTONS (your missing feature) */
+/*----- MONTH SWITCHING BUTTONS  */
 document.getElementById("prev-month").addEventListener("click", () => {
     currentMonth--;
 

@@ -64,11 +64,10 @@ header {
     left: 0;
     background-color: rgba(var(--black), 0.8);
     align-items: center;
-    border-bottom-left-radius: 25px;
-    border-bottom-right-radius: 25px;
     box-shadow: #1d0f1a;
     backdrop-filter: blur(10px);
     z-index: 1000;
+    border-bottom: 1px solid var(--white);
 
 }
 header h1{
@@ -189,12 +188,14 @@ header a:hover{
     margin-left: 0;
     width: 100%;
     margin-bottom: 2%;
+    
 }
 .day {
     border: 1px var(--background);
     border-radius: 10px;
     padding: 10px;
     min-height: 60px;
+    color: var(--background);
     margin-left: 0; /* let the grid control the column width */
 }
 .task {
@@ -206,7 +207,7 @@ header a:hover{
   border-radius: 3px;
 }
 .day.blank {
-    background-color: rgba(44, 44, 44,0.25); 
+    background-color: var(--background-light);
 }
 .day.date {
     background-color: white; /* white */
@@ -219,6 +220,7 @@ header a:hover{
     font-size: 1.35em;
     height: auto;
     min-height: 20px;
+    color: var(--white);
 }
 /* -------------- Footer Bar Styling ------------- */
 
