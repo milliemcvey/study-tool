@@ -29,7 +29,7 @@ body {
     color: var(--white);
     font-family: "Arimo", sans-serif;
     font-size: 1.25rem;
-    overflow-x: hidden;
+    overflow-x: none;
     margin: 0;
 }
 section {
@@ -243,4 +243,259 @@ footer a {
 }
 footer li {
     list-style: none;
+}
+/* -------------- Notification Layout ------------- */
+.notification-panels {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+.notification-card {
+    flex: 1;
+    min-width: 280px;
+    background: rgba(var(--black), 0.35);
+    border: 1px solid rgba(var(--white), 0.15);
+    border-radius: 15px;
+    padding: 1.5rem;
+    backdrop-filter: blur(10px);
+}
+
+.notification-card ul {
+    padding-left: 1rem;
+}
+
+.notification-empty {
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+/* -------------- Top Section Layout ------------- */
+.top-section {
+    display: flex;
+    gap: 2rem;
+    align-items: flex-start;
+}
+
+.top-section-left {
+    flex: 2;
+}
+
+#revision-tasks-sidebar {
+    flex: 1;
+}
+
+/* -------------- Task Cards ------------- */
+.task-display {
+    max-height: 35vh;
+    overflow-y: auto;
+    margin-bottom: 1rem;
+}
+
+.task-card {
+    background: rgba(var(--black), 0.4);
+    border: 1px solid rgba(var(--white), 0.15);
+    border-radius: 12px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    transition: 0.2s ease;
+}
+
+.task-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--colour-2);
+}
+
+.task-card h4 {
+    margin-bottom: 0.3rem;
+}
+
+.task-card h5 {
+    font-size: 0.9rem;
+    opacity: 0.85;
+}
+
+.task-card p {
+    font-size: 0.9rem;
+}
+
+.task-card a {
+    color: var(--colour-2);
+    font-size: 0.9rem;
+}
+
+/* -------------- Task Filters ------------- */
+.task-filters {
+    margin-bottom: 1rem;
+}
+
+.task-filters select {
+    padding: 0.4rem;
+    border-radius: 6px;
+    background: var(--background-light);
+    color: var(--white);
+    border: 1px solid rgba(var(--white), 0.2);
+}
+
+/* -------------- Goals Section ------------- */
+.goals-container {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+.goal-selector,
+.goal-visual-feedback {
+    flex: 1;
+    min-width: 280px;
+    background: rgba(var(--black), 0.35);
+    border: 1px solid rgba(var(--white), 0.15);
+    border-radius: 15px;
+    padding: 1.5rem;
+    backdrop-filter: blur(10px);
+}
+
+.progress-bar-wrapper {
+    margin-top: 1rem;
+}
+
+.progress-bar-background {
+    width: 100%;
+    height: 18px;
+    background: rgba(var(--white), 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--colour-2), var(--colour-1));
+    transition: width 0.4s ease;
+}
+
+/* -------------- Grades Section ------------- */
+.grades-layout {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+.module-grades,
+.grade-entry {
+    flex: 1;
+    min-width: 300px;
+    background: rgba(var(--black), 0.35);
+    border: 1px solid rgba(var(--white), 0.15);
+    border-radius: 15px;
+    padding: 1.5rem;
+    backdrop-filter: blur(10px);
+}
+
+/* Tables */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+
+th, td {
+    padding: 0.6rem;
+    text-align: left;
+    font-size: 0.9rem;
+}
+
+th {
+    border-bottom: 1px solid rgba(var(--white), 0.3);
+}
+
+td {
+    border-bottom: 1px solid rgba(var(--white), 0.1);
+}
+
+/* Grade Form Button */
+#add-grade {
+    background: var(--colour-2);
+    border: none;
+    padding: 0.7rem;
+    border-radius: 8px;
+    color: white;
+    cursor: pointer;
+}
+
+#add-grade:hover {
+    background: var(--colour-1);
+}
+
+/* -------------- Study Timer ------------- */
+.timer-container {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+.timer-settings,
+.timer-display-panel {
+    flex: 1;
+    min-width: 280px;
+    background: rgba(var(--black), 0.35);
+    border: 1px solid rgba(var(--white), 0.15);
+    border-radius: 15px;
+    padding: 1.5rem;
+    backdrop-filter: blur(10px);
+}
+
+.timer-display {
+    font-size: 3rem;
+    text-align: center;
+    margin: 1rem 0;
+    letter-spacing: 2px;
+}
+
+.timer-controls {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.timer-controls button {
+    background: var(--colour-2);
+    border: none;
+    padding: 0.6rem 1rem;
+    border-radius: 8px;
+    color: white;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.timer-controls button:hover {
+    background: var(--colour-1);
+}
+
+/* -------------- Form Errors & Hints ------------- */
+.form-error {
+    color: #ff6b6b;
+    font-size: 0.85rem;
+}
+
+.hint {
+    font-size: 0.8rem;
+    opacity: 0.7;
+}
+
+/* -------------- Responsive ------------- */
+@media (max-width: 900px) {
+    .top-section {
+        flex-direction: column;
+    }
+
+    .grades-layout,
+    .goals-container,
+    .timer-container {
+        flex-direction: column;
+    }
+
+    section {
+        margin: 3vh 5vw;
+    }
 }
