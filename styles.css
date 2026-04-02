@@ -226,7 +226,7 @@ header a:hover{
 
 footer {
     display: flex;
-    gap: 70%;
+    gap: 50%;
     padding: 1.5% 15%;
     background-color: var(--black);
     width: 100vw;

@@ -4,14 +4,12 @@ let moduleData = [];
 let userMarks = {};
 let gradeGoal = "2:1";
 
-/*----- Element References (your originals kept) */
+/*----- Element References */
 const calendar = document.getElementById("calendar");
 const monthYear = document.getElementById("month-year");
-const addTaskBtn = document.getElementById("add-task");
+
 const taskNameInput = document.getElementById("task-name");
 const taskDateInput = document.getElementById("task-date");
-
-/*----- Additional references for full functionality */
 const taskDescriptionInput = document.getElementById("task-description");
 const taskUrlInput = document.getElementById("task-url");
 const taskModuleInput = document.getElementById("task-module");
@@ -44,10 +42,10 @@ let currentDate = new Date();
 let currentMonth = currentDate.getMonth();
 let currentYear = currentDate.getFullYear();
 
-/*----- Load calendar immediately */
+/*----- Init */
 loadCalendar();
 
-/*----- Load JSON after calendar loads */
+/*----- Load modules */
 fetch("modules.json")
     .then(res => res.json())
     .then(data => {
@@ -56,22 +54,20 @@ fetch("modules.json")
         updateNotifications();
         updateModuleTable();
     })
-    .catch(() => console.warn("modules.json not found — calendar still loads"));
+    .catch(() => console.warn("modules.json not found"));
 
-/*----- Populate dropdowns */
+/*----- Dropdowns */
 function populateModuleDropdowns() {
     moduleData.forEach(mod => {
-        const opt1 = document.createElement("option");
-        opt1.value = mod.code;
-        opt1.textContent = `${mod.code} – ${mod.name}`;
-        taskModuleInput.appendChild(opt1);
-
-        const opt2 = opt1.cloneNode(true);
-        gradeModuleSelect.appendChild(opt2);
+        const opt = document.createElement("option");
+        opt.value = mod.code;
+        opt.textContent = `${mod.code} – ${mod.name}`;
+        taskModuleInput.appendChild(opt);
+        gradeModuleSelect.appendChild(opt.cloneNode(true));
     });
 }
 
-/*----- FR1: Calendar Display */
+/*----- Calendar */
 function loadCalendar(month = currentMonth, year = currentYear) {
     calendar.innerHTML = "";
 
@@ -83,30 +79,24 @@ function loadCalendar(month = currentMonth, year = currentYear) {
         year: "numeric"
     });
 
-    /*----- Weekday headers */
-    ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].forEach(day => {
-        const header = document.createElement("div");
-        header.classList.add("day", "header-cell");
-        header.textContent = day;
-        calendar.appendChild(header);
+    ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"].forEach(day => {
+        const d = document.createElement("div");
+        d.classList.add("day","header-cell");
+        d.textContent = day;
+        calendar.appendChild(d);
     });
 
-    /*----- Blank cells before month starts */
     const firstDayIndex = (firstDay.getDay() + 6) % 7;
+
     for (let i = 0; i < firstDayIndex; i++) {
-        const blank = document.createElement("div");
-        blank.classList.add("day", "blank");
-        calendar.appendChild(blank);
+        calendar.appendChild(document.createElement("div")).classList.add("day","blank");
     }
 
-    /*----- Actual days */
     for (let d = 1; d <= daysInMonth; d++) {
-        const paddedMonth = String(month + 1).padStart(2, "0");
-        const paddedDay = String(d).padStart(2, "0");
-        const dateString = `${year}-${paddedMonth}-${paddedDay}`;
-
+        const dateString = `${year}-${String(month+1).padStart(2,"0")}-${String(d).padStart(2,"0")}`;
         const cell = document.createElement("div");
-        cell.classList.add("day", "date");
+
+        cell.classList.add("day","date");
         if (dateString === today) cell.classList.add("today");
 
         cell.setAttribute("data-date", dateString);
@@ -114,115 +104,110 @@ function loadCalendar(month = currentMonth, year = currentYear) {
 
         calendar.appendChild(cell);
     }
-    /*----- Fill the bottom row so the calendar is always complete */
-    const totalCells = firstDayIndex + daysInMonth;
-    const remainingCells = totalCells % 7;
 
-    if (remainingCells !== 0) {
-        const blanksToAdd = 7 - remainingCells;
-        for (let i = 0; i < blanksToAdd; i++) {
-            const blank = document.createElement("div");
-            blank.classList.add("day", "blank");
-            calendar.appendChild(blank);
-        }
-    }
-        renderTasksOnCalendar();
-    }
+    renderTasksOnCalendar();
+}
 
-/*----- MONTH SWITCHING BUTTONS  */
-document.getElementById("prev-month").addEventListener("click", () => {
-    currentMonth--;
-
-    if (currentMonth < 0) {
-        currentMonth = 11;
-        currentYear--;
-    }
-
+/*----- Month buttons */
+document.getElementById("prev-month").onclick = () => {
+    currentMonth = (currentMonth + 11) % 12;
+    if (currentMonth === 11) currentYear--;
     loadCalendar(currentMonth, currentYear);
-});
+};
 
-document.getElementById("next-month").addEventListener("click", () => {
-    currentMonth++;
-
-    if (currentMonth > 11) {
-        currentMonth = 0;
-        currentYear++;
-    }
-
+document.getElementById("next-month").onclick = () => {
+    currentMonth = (currentMonth + 1) % 12;
+    if (currentMonth === 0) currentYear++;
     loadCalendar(currentMonth, currentYear);
-});
+};
 
-/*----- FR2: Add Revision Task */
+/*----- Add Task */
 document.getElementById("task-form").addEventListener("submit", e => {
     e.preventDefault();
     addTask();
 });
 
 function addTask() {
-    const name = taskNameInput.value.trim();
-    const desc = taskDescriptionInput.value.trim();
-    const url = taskUrlInput.value.trim();
-    const module = taskModuleInput.value;
-    const type = taskTypeInput.value;
-    const due = taskDateInput.value;
-    const completed = taskCompletionInput.value;
-
-    if (!name || !desc || !due) {
-        taskFormError.textContent = "Please fill in all required fields.";
-        return;
-    }
-
-    if (/<[a-z][\s\S]*>/i.test(desc)) {
-        taskFormError.textContent = "Description cannot contain HTML tags.";
-        return;
-    }
-
-    if (due < today) {
-        taskFormError.textContent = "Due date cannot be in the past.";
-        return;
-    }
-
-    revisionTasks.push({ name, desc, url, module, type, due, completed });
+    const task = {
+        name: taskNameInput.value.trim(),
+        desc: taskDescriptionInput.value.trim(),
+        url: taskUrlInput.value.trim(),
+        module: taskModuleInput.value,
+        type: taskTypeInput.value,
+        due: taskDateInput.value,
+        completed: taskCompletionInput.value
+    };
 
     taskFormError.textContent = "";
-    taskNameInput.value = "";
-    taskDescriptionInput.value = "";
-    taskUrlInput.value = "";
-    taskDateInput.value = "";
-    taskCompletionInput.value = "";
+
+    if (!task.name || !task.desc || !task.due || !task.module || !task.type) {
+        return showError("Please fill in all required fields.");
+    }
+
+    if (task.name.length < 3) {
+        return showError("Task name must be at least 3 characters.");
+    }
+
+    if (/<\/?[a-z][\s\S]*>/i.test(task.desc)) {
+        return showError("Description cannot contain HTML.");
+    }
+
+    if (task.url) {
+        try { new URL(task.url); }
+        catch { return showError("Please enter a valid URL."); }
+    }
+
+    const todayDate = new Date(today);
+    const dueDate = new Date(task.due);
+
+    if (dueDate < todayDate) {
+        return showError("Due date cannot be in the past.");
+    }
+
+    if (task.completed) {
+        const completedDate = new Date(task.completed);
+        if (completedDate < dueDate) {
+            return showError("Completion date cannot be before due date.");
+        }
+    }
+
+    revisionTasks.push(task);
+
+    document.getElementById("task-form").reset();
 
     renderTaskList();
     renderTasksOnCalendar();
     updateNotifications();
 }
 
-/*----- FR3: Display Tasks in Due-Date Order */
+function showError(msg) {
+    taskFormError.textContent = msg;
+}
+
+/*----- Task List */
 function renderTaskList() {
     const container = document.getElementById("task-list");
     container.innerHTML = "";
 
     revisionTasks
-        .sort((a, b) => a.due.localeCompare(b.due))
+        .sort((a,b) => a.due.localeCompare(b.due))
         .forEach(task => {
             const card = document.createElement("div");
             card.classList.add("task-card");
 
             card.innerHTML = `
                 <h4>${task.name}</h4>
-                <div class="tag-container">
-                    <h5 class="card-tags">${task.type}</h5>
-                    <h5 class="card-tags">${task.module}</h5>
-                </div>
+                <h5>${task.module} • ${task.type}</h5>
                 <h5>Due: ${formatDate(task.due)}</h5>
                 <p>${task.desc}</p>
-                ${task.url ? `<a href="${task.url}" target="_blank">Resource Link</a>` : ""}
+                ${task.url ? `<a href="${task.url}" target="_blank">Resource</a>` : ""}
             `;
 
             container.appendChild(card);
         });
 }
 
-/*----- Helper: Put tasks onto calendar cells */
+/*----- Calendar Tasks */
 function renderTasksOnCalendar() {
     document.querySelectorAll(".tasks").forEach(t => t.innerHTML = "");
 
@@ -233,12 +218,11 @@ function renderTasksOnCalendar() {
             div.classList.add("task");
             div.textContent = task.name;
             cell.querySelector(".tasks").appendChild(div);
-            cell.classList.add("has-task");
         }
     });
 }
 
-/*----- FR4 & FR5: Overdue + Upcoming Notifications */
+/*----- Notifications */
 function updateNotifications() {
     const now = new Date();
     const upcomingLimit = new Date();
@@ -251,171 +235,32 @@ function updateNotifications() {
         const dueDate = new Date(task.due);
 
         if (task.due < today) {
-            const li = document.createElement("li");
-            li.textContent = `${task.name} (due ${formatDate(task.due)})`;
-            overdueList.appendChild(li);
+            overdueList.innerHTML += `<li>${task.name} (${formatDate(task.due)})</li>`;
         }
 
         if (dueDate >= now && dueDate <= upcomingLimit) {
-            const li = document.createElement("li");
-            li.textContent = `${task.name} – ${formatDate(task.due)}`;
-            upcomingList.appendChild(li);
+            upcomingList.innerHTML += `<li>${task.name} – ${formatDate(task.due)}</li>`;
         }
     });
 }
 
-/*----- FR7: Enter Grades + Calculate Module Grades */
-gradeModuleSelect.addEventListener("change", () => {
-    const module = moduleData.find(m => m.code === gradeModuleSelect.value);
-    gradeComponentSelect.innerHTML = "";
-
-    module.components.forEach(c => {
-        const opt = document.createElement("option");
-        opt.value = c.name;
-        opt.textContent = `${c.name} (${c.weight}%)`;
-        gradeComponentSelect.appendChild(opt);
-    });
-
-    updateComponentTable();
-});
-
-document.getElementById("grade-form").addEventListener("submit", e => {
-    e.preventDefault();
-    saveMark();
-});
-
-function saveMark() {
-    const moduleCode = gradeModuleSelect.value;
-    const component = gradeComponentSelect.value;
-    const mark = parseInt(gradeMarkInput.value);
-
-    if (isNaN(mark) || mark < 0 || mark > 100) {
-        gradeFormError.textContent = "Marks must be between 0 and 100.";
-        return;
-    }
-
-    if (!userMarks[moduleCode]) userMarks[moduleCode] = {};
-    userMarks[moduleCode][component] = mark;
-
-    gradeFormError.textContent = "";
-    updateComponentTable();
-    updateModuleTable();
-    updateGoalProgress();
-}
-
-function updateComponentTable() {
-    const moduleCode = gradeModuleSelect.value;
-    const module = moduleData.find(m => m.code === moduleCode);
-
-    componentGradesBody.innerHTML = "";
-
-    module.components.forEach(c => {
-        const mark = userMarks[moduleCode]?.[c.name] ?? "--";
-        const weighted = mark === "--" ? "--" : ((mark * c.weight) / 100).toFixed(1);
-
-        const row = document.createElement("tr");
-        row.innerHTML = `
-            <td>${c.name}</td>
-            <td>${c.weight}%</td>
-            <td>${mark}</td>
-            <td>${weighted}</td>
-        `;
-        componentGradesBody.appendChild(row);
-    });
-}
-
-function updateModuleTable() {
-    moduleGradesBody.innerHTML = "";
-
-    moduleData.forEach(mod => {
-        let total = 0;
-        let complete = true;
-
-        mod.components.forEach(c => {
-            const mark = userMarks[mod.code]?.[c.name];
-            if (mark == null) complete = false;
-            else total += (mark * c.weight) / 100;
-        });
-
-        const row = document.createElement("tr");
-        row.innerHTML = `
-            <td>${mod.code}</td>
-            <td>${mod.name}</td>
-            <td>${complete ? total.toFixed(1) + "%" : "--"}</td>
-            <td>${complete ? "Complete" : "Incomplete"}</td>
-        `;
-        moduleGradesBody.appendChild(row);
-    });
-}
-
-/*----- FR6: Goal Setting + Progress Feedback */
-document.getElementById("grade-goal").addEventListener("change", e => {
-    gradeGoal = e.target.value;
-    updateGoalProgress();
-});
-
-function updateGoalProgress() {
-    let total = 0;
-    let count = 0;
-
-    moduleData.forEach(mod => {
-        let moduleTotal = 0;
-        let complete = true;
-
-        mod.components.forEach(c => {
-            const mark = userMarks[mod.code]?.[c.name];
-            if (mark == null) {
-                complete = false;
-            } else {
-                moduleTotal += (mark * c.weight) / 100;
-            }
-        });
-
-        if (complete) {
-            total += moduleTotal;
-            count++;
-        }
-    });
-
-    if (count === 0) {
-        overallAverageDisplay.textContent = "--%";
-        goalStatusDisplay.textContent = "No marks entered yet.";
-        progressBar.style.width = "0%";
-        return;
-    }
-
-    const avg = (total / count).toFixed(1);
-    overallAverageDisplay.textContent = avg + "%";
-
-    let targetMin = 60;
-    let targetMax = 69;
-
-    if (gradeGoal === "first") { targetMin = 70; targetMax = 100; }
-    if (gradeGoal === "2:2")   { targetMin = 50; targetMax = 59; }
-    if (gradeGoal === "third") { targetMin = 40; targetMax = 49; }
-
-    targetRangeDisplay.textContent = `${targetMin}–${targetMax}%`;
-
-    progressBar.style.width = avg + "%";
-
-    goalStatusDisplay.textContent =
-        avg >= targetMin ? "You are on track!" : "Below target — keep going!";
-}
-
-/*----- FR8: Study Timer */
+/*----- Timer */
 let timerInterval = null;
 let remainingSeconds = 0;
 
-document.getElementById("timer-start").addEventListener("click", startTimer);
-document.getElementById("timer-pause").addEventListener("click", pauseTimer);
-document.getElementById("timer-reset").addEventListener("click", resetTimer);
+document.getElementById("timer-start").onclick = startTimer;
+document.getElementById("timer-pause").onclick = () => clearInterval(timerInterval);
+document.getElementById("timer-reset").onclick = () => {
+    clearInterval(timerInterval);
+    remainingSeconds = 0;
+    timerDisplay.textContent = "00:00";
+};
 
 function startTimer() {
     if (timerInterval) return;
 
-    if (remainingSeconds === 0) {
-        const minutes = parseInt(document.getElementById("timer-length").value);
-        remainingSeconds = minutes * 60;
+    if (!remainingSeconds) {
+        remainingSeconds = parseInt(document.getElementById("timer-length").value) * 60;
     }
 
     timerInterval = setInterval(() => {
@@ -424,31 +269,18 @@ function startTimer() {
 
         if (remainingSeconds <= 0) {
             clearInterval(timerInterval);
-            timerInterval = null;
             timerSound.play();
         }
     }, 1000);
 }
 
-function pauseTimer() {
-    clearInterval(timerInterval);
-    timerInterval = null;
-}
-
-function resetTimer() {
-    clearInterval(timerInterval);
-    timerInterval = null;
-    remainingSeconds = 0;
-    timerDisplay.textContent = "00:00";
-}
-
 function updateTimerDisplay() {
-    const mins = String(Math.floor(remainingSeconds / 60)).padStart(2, "0");
-    const secs = String(remainingSeconds % 60).padStart(2, "0");
-    timerDisplay.textContent = `${mins}:${secs}`;
+    const m = String(Math.floor(remainingSeconds / 60)).padStart(2,"0");
+    const s = String(remainingSeconds % 60).padStart(2,"0");
+    timerDisplay.textContent = `${m}:${s}`;
 }
 
-/*----- Helper: Format date */
+/*----- Helper */
 function formatDate(date) {
     return new Date(date).toLocaleDateString("en-GB");
 }
