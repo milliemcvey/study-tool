@@ -39,83 +39,75 @@
     </section>
 
     <section class="top-section">
-        
-        <!-- CALENDAR (FR1) -->
-        <div class="top-section-left" id="deadline-calendar">
-            <div class="deadline-table">
-                <div class="calendar-header">
-                    <button id="prev-month" class="month-arrow" aria-label="Previous month">&lt;</button>
-                    <h2 id="month-year">Month Year</h2>
-                    <button id="next-month" class="month-arrow" aria-label="Next month">&gt;</button>
-                </div>
-                <div class="calendar-grid" id="calendar">
-                    <!-- Calendar cells populated by JS -->
-                </div>
+
+    <!-- ROW 1: Calendar + Task Adder -->
+    <div class="top-row">
+
+        <!-- CALENDAR -->
+        <div class="calendar-panel" id="deadline-calendar">
+            <div class="calendar-header">
+                <button id="prev-month" class="month-arrow">&lt;</button>
+                <h2 id="month-year">Month Year</h2>
+                <button id="next-month" class="month-arrow">&gt;</button>
             </div>
+            <div class="calendar-grid" id="calendar"></div>
         </div>
 
-        <!-- REVISION TASKS (FR2, FR3, FR4, FR5) -->
-        <div id="revision-tasks-sidebar">
-            <h2>Revision Tasks</h2>
-            <div class="task-filters">
-                <label for="task-sort">Sort by:</label>
-                <select id="task-sort">
-                    <option value="dueDateAsc">Due Date (Earliest First)</option>
-                    <option value="dueDateDesc">Due Date (Latest First)</option>
-                    <option value="completion">Completion Status</option>
-                </select>
-            </div>
-            <div class="task-display" id="task-list">
-                <!-- Task cards populated by JS, ordered by due date (FR3) -->
-                <!-- Example structure:
-                <div class="task-card" data-due-date="2026-03-01">
-                    <h4>Task Title</h4>
-                    <div class="tag-container">
-                        <h5 class="card-tags">Type: Reading</h5>
-                        <h5 class="card-tags">Module: COMP101</h5>
-                    </div>
-                    <h5>Due: 01/03/2026</h5>
-                    <h5 class="completion-status">Status: Not Completed</h5>
-                    <p>Description of Task Goes Here</p>
-                    <a href="#" class="task-link" target="_blank" rel="noopener">Resource Link</a>
-                    <button class="mark-complete-btn">Mark as Completed</button>
-                </div>
-                -->
-            </div>
-            <div class="task-adder main-content" id="add-task-section">
+        <!-- TASK ADDER -->
+        <div class="task-adder-panel">
             <h2>Add Revision Task</h2>
-                <form id="task-form" novalidate>
-                    <div class="form-row">
-                        <label for="task-name">Task Name</label>
-                        <input type="text" id="task-name" name="task-name" placeholder="e.g. Revise Set Theory" required>
-                    </div>
-                    <div class="form-row">
-                        <label for="task-description">Description</label>
-                        <textarea id="task-description" name="task-description" placeholder="Short description (no HTML tags allowed)" required></textarea>
-                    </div>
-                    <div class="form-row">
-                        <label for="task-type">Task Type</label>
-                        <select id="task-type" name="task-type">
-                            <option value="reading">Reading</option>
-                            <option value="practice">Practice Questions</option>
-                            <option value="summary">Write Summary Notes</option>
-                            <option value="past-paper">Past Paper</option>
-                            <option value="project">Project Work</option>
-                        </select>
-                    </div>
-                    <div class="form-row">
-                        <label for="task-date">Due Date</label>
-                        <input type="date" id="task-date" name="task-date" required>
-                        <small class="hint">Due date cannot be in the past.</small>
-                    </div>
-                    <div class="form-row btn">
-                        <button type="submit" id="add-task">Add Task</button>
-                    </div>
-                    <p class="form-error" id="task-form-error"></p>
-                </form>
-            </div>
+            <form id="task-form" novalidate>
+
+                <div class="form-row">
+                    <label>Task Name</label>
+                    <input type="text" id="task-name" required>
+                </div>
+
+                <div class="form-row">
+                    <label>Description</label>
+                    <textarea id="task-description" required></textarea>
+                </div>
+
+                <div class="form-row">
+                    <label>Task Type</label>
+                    <select id="task-type">
+                        <option value="reading">Reading</option>
+                        <option value="practice">Practice</option>
+                        <option value="summary">Summary</option>
+                        <option value="past-paper">Past Paper</option>
+                        <option value="project">Project</option>
+                    </select>
+                </div>
+
+                <div class="form-row">
+                    <label>Due Date</label>
+                    <input type="date" id="task-date" required>
+                </div>
+
+                <button type="submit" id="add-task">Add Task</button>
+                <p class="form-error" id="task-form-error"></p>
+
+            </form>
         </div>
-    </section>
+
+    </div>
+
+    <!-- ROW 2: TASK LIST -->
+    <div class="task-list-section">
+        <h2>Revision Tasks</h2>
+
+        <div class="task-filters">
+            <label>Sort by:</label>
+            <select id="task-sort">
+                <option value="dueDateAsc">Earliest First</option>
+                <option value="dueDateDesc">Latest First</option>
+            </select>
+        </div>
+
+        <div id="task-list" class="task-display"></div>
+    </div>
+
+</section>
 
     <!-- ADD REVISION TASK FORM (FR2) -->
     
