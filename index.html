@@ -2,273 +2,220 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Study Tool Homepage</title>
+    <title>Study Planner</title>
     <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
-    <!-- HEADER -->
-    <header class="header-bar">
-        <h1><wrap>Study</wrap> Tool</h1>
-            <a href="#revision-tasks-sidebar"><h4>Tasks</h4></a>
-            <a href="#goals"><h4>Goals</h4></a>
-            <a href="#grades"><h4>Grades</h4></a>
-            <a href="#study-timer"><h4 class="header-btn">Study Timer</h4></a>
-            <h4 class="btn">Average Grade: <wrap id="average-grade">--%</wrap></h4>
-    </header>
 
-    <!-- NOTIFICATIONS (FR4 & FR5) -->
-    <section class="notifications main-content" id="notifications">
-        <h2>Notifications</h2>
+<!--HEADER-->
+<header>
+    <a href="index.html"><h1>Study Planner</h1></a>
+    <nav>
+        <a href="#tasks">Tasks</a>
+        <a href="#calendar-section">Calendar</a>
+        <a href="#grades">Grades</a>
+        <a href="#goals">Goals</a>
+        <a href="#timer">Timer</a>
+    </nav>
+</header>
+
+<main>
+
+<!--NOTIFICATIONS-->
+<section id="notifications">
+    <div class="container overview">
+        <h2>Overview</h2>
+
         <div class="notification-panels">
-            <div class="notification-card" id="overdue-tasks">
-                <h3>Overdue Revision Tasks</h3>
-                <ul id="overdue-task-list">
-                    <!--JS -->
-                </ul>
-                <p class="notification-empty" id="overdue-empty">No overdue tasks. Great job staying on track.</p>
+            <div class="notification-card">
+                <h3>Overdue Tasks</h3>
+                <ul id="overdue-task-list"></ul>
             </div>
-            <div class="notification-card" id="upcoming-deadlines">
-                <h3>Upcoming Deadlines (Next 30 Days)</h3>
-                <ul id="upcoming-deadline-list">
-                    <!--JS -->
-                </ul>
-                <p class="notification-empty" id="upcoming-empty">No upcoming deadlines in the next 30 days.</p>
+
+            <div class="notification-card">
+                <h3>Upcoming Deadlines</h3>
+                <ul id="upcoming-deadline-list"></ul>
             </div>
         </div>
-    </section>
-
-    <section class="top-section">
-
-    <!-- ROW 1: Calendar + Task Adder -->
-    <div class="top-row">
-
-        <!-- CALENDAR -->
-        <div class="calendar-panel" id="deadline-calendar">
-            <div class="calendar-header">
-                <button id="prev-month" class="month-arrow">&lt;</button>
-                <h2 id="month-year">Month Year</h2>
-                <button id="next-month" class="month-arrow">&gt;</button>
-            </div>
-            <div class="calendar-grid" id="calendar"></div>
-        </div>
-
-        <!-- TASK ADDER -->
-        <div class="task-adder-panel">
-            <h2>Add Revision Task</h2>
-            <form id="task-form" novalidate>
-
-                <div class="form-row">
-                    <label>Task Name</label>
-                    <input type="text" id="task-name" required>
-                </div>
-
-                <div class="form-row">
-                    <label>Description</label>
-                    <textarea id="task-description" required></textarea>
-                </div>
-
-                <div class="form-row">
-                    <label>Task Type</label>
-                    <select id="task-type">
-                        <option value="reading">Reading</option>
-                        <option value="practice">Practice</option>
-                        <option value="summary">Summary</option>
-                        <option value="past-paper">Past Paper</option>
-                        <option value="project">Project</option>
-                    </select>
-                </div>
-
-                <div class="form-row">
-                    <label>Due Date</label>
-                    <input type="date" id="task-date" required>
-                </div>
-
-                <button type="submit" id="add-task">Add Task</button>
-                <p class="form-error" id="task-form-error"></p>
-
-            </form>
-        </div>
-
     </div>
-
-    <!-- ROW 2: TASK LIST -->
-    <div class="task-list-section">
-        <h2>Revision Tasks</h2>
-
-        <div class="task-filters">
-            <label>Sort by:</label>
-            <select id="task-sort">
-                <option value="dueDateAsc">Earliest First</option>
-                <option value="dueDateDesc">Latest First</option>
-            </select>
-        </div>
-
-        <div id="task-list" class="task-display"></div>
-    </div>
-
 </section>
 
-    <!-- ADD REVISION TASK FORM (FR2) -->
-    
+<!--CALENDAR-->
+<section id="calendar-section">
+    <div class="container">
+        <h2>Calendar</h2>
 
-    <!-- GOALS & OVERALL GRADE FEEDBACK (FR6) -->
-    <section class="main-content" id="goals">
-        <h2>Grade Goal & Progress</h2>
-        <div class="goals-container">
-            <div class="goal-selector">
-                <h3>Set Final Overall Grade Goal</h3>
-                <label for="grade-goal">Target Classification</label>
-                <select id="grade-goal" name="grade-goal">
-                    <option value="third">Third Class (40–49)</option>
-                    <option value="2:2">2:2 (50–59)</option>
-                    <option value="2:1" selected>2:1 (60–69)</option>
-                    <option value="first">First Class (70+)</option>
-                </select>
-                <p class="hint">You can change this goal at any time.</p>
-            </div>
-
-            <div class="goal-visual-feedback">
-                <h3>Progress Towards Goal</h3>
-                <div class="progress-summary">
-                    <p>Current Overall Average: <span id="overall-average">--%</span></p>
-                    <p>Target Range: <span id="target-range">60–69%</span></p>
-                    <p>Status: <span id="goal-status">No marks entered yet.</span></p>
-                </div>
-                <div class="progress-bar-wrapper">
-                    <div class="progress-bar-background">
-                        <div class="progress-bar-fill" id="overall-progress-bar"></div>
-                    </div>
-                </div>
-            </div>
+        <div class="calendar-header">
+            <button id="prev-month" class="month-arrow">←</button>
+            <h3 id="month-year"></h3>
+            <button id="next-month" class="month-arrow">→</button>
         </div>
-    </section>
 
-    <!-- GRADES SECTION (FR7) -->
-    <section class="main-content" id="grades">
+        <div id="calendar" class="calendar-grid"></div>
+    </div>
+</section>
+
+<!--TASKS-->
+<section id="tasks">
+    <div class="container">
+        <h2>Tasks</h2>
+
+        <!-- Task Form -->
+            <div id="task-form-container">
+                <form id="task-form">
+
+                    <div class="form-row">
+                        <label>Task Name *</label>
+                        <input id="task-name" required>
+                    </div>
+
+                    <div class="form-row">
+                        <label>Due Date *</label>
+                        <input id="task-date" type="date" required>
+                    </div>
+
+                    <div class="form-row">
+                        <label>Module *</label>
+                        <select id="task-module"></select>
+                    </div>
+
+                    <div class="form-row">
+                        <label>Task Type *</label>
+                        <select id="task-type">
+                            <option value="">Select type</option>
+                            <option value="Exam">Exam</option>
+                            <option value="Coursework">Coursework</option>
+                        </select>
+                    </div>
+
+                    <button id="add-task" type="submit">Add Task</button>
+                </form>
+
+                <p id="task-form-error" class="form-error"></p>
+            </div>
+
+        <div class="top-section">
+            
+            <!-- Task List -->
+            <div class="top-section-left">
+                <div id="task-list" class="task-display"></div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- ================= GRADES ================= -->
+<section id="grades">
+    <div class="container">
         <h2>Grades</h2>
+
         <div class="grades-layout">
-            <!-- MODULE GRADES TABLE -->
+
             <div class="module-grades">
-                <h3>Module Overview</h3>
+                <h3>Module Averages</h3>
                 <table>
                     <thead>
                         <tr>
-                            <th>Module Code</th>
-                            <th>Module Name</th>
-                            <th>Final Module Grade</th>
-                            <th>Status</th>
+                            <th>Module</th>
+                            <th>Average</th>
                         </tr>
                     </thead>
-                    <tbody id="module-grades-body">
-                        <!-- Populated from JSON + user marks by JS -->
-                    </tbody>
+                    <tbody id="module-grades-body"></tbody>
                 </table>
             </div>
 
-            <!-- ENTER GRADES FORM -->
             <div class="grade-entry">
-                <h3>Enter Assignment / Exam Marks</h3>
-                <form id="grade-form" novalidate>
+                <h3>Add Grade</h3>
+
+                <form>
                     <div class="form-row">
-                        <label for="grade-module">Module</label>
-                        <select id="grade-module" name="grade-module" required>
-                            <!-- Populated from JSON modules by JS -->
-                        </select>
+                        <label>Module</label>
+                        <select id="grade-module"></select>
                     </div>
 
                     <div class="form-row">
-                        <label for="grade-component">Assessment Component</label>
-                        <select id="grade-component" name="grade-component" required>
-                            <!-- Populated based on selected module (coursework/exam components) -->
-                        </select>
+                        <label>Component</label>
+                        <select id="grade-component"></select>
                     </div>
 
                     <div class="form-row">
-                        <label for="grade-mark">Mark (0–100)</label>
-                        <input type="number" id="grade-mark" name="grade-mark" min="0" max="100" required>
+                        <label>Mark</label>
+                        <input id="grade-mark" type="number">
                     </div>
 
-                    <div class="form-row">
-                        <button type="submit" id="add-grade">Save Mark</button>
-                    </div>
-
-                    <p class="form-error" id="grade-form-error"></p>
+                    <button id="add-grade">Add Grade</button>
                 </form>
 
-                <div class="grade-component-list">
-                    <h4>Component Breakdown</h4>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Component</th>
-                                <th>Weighting</th>
-                                <th>Mark</th>
-                                <th>Weighted Contribution</th>
-                            </tr>
-                        </thead>
-                        <tbody id="component-grades-body">
-                            <!-- Populated by JS -->
-                        </tbody>
-                    </table>
-                </div>
+                <p id="grade-form-error" class="form-error"></p>
             </div>
-        </div>
-    </section>
 
-    <!-- STUDY TIMER (FR8) -->
-    <section class="main-content" id="study-timer">
-        <h2>Study Focus Timer</h2>
+        </div>
+    </div>
+</section>
+
+<!-- ================= GOALS ================= -->
+<section id="goals">
+    <div class="container">
+        <h2>Goals</h2>
+
+        <div class="goals-container">
+
+            <div class="goal-selector">
+                <h3>Target</h3>
+                <p id="target-range"></p>
+            </div>
+
+            <div class="goal-visual-feedback">
+                <h3>Progress</h3>
+
+                <p id="goal-status"></p>
+
+                <div class="progress-bar-background">
+                    <div id="overall-progress-bar" class="progress-bar-fill"></div>
+                </div>
+
+                <p>Overall Average: <span id="overall-average"></span></p>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- ================= TIMER ================= -->
+<section id="timer">
+    <div class="container">
+        <h2>Study Timer</h2>
+
         <div class="timer-container">
+
             <div class="timer-settings">
-                <h3>Set Focus Duration</h3>
-                <label for="timer-length">Focus Time (minutes)</label>
-                <select id="timer-length" name="timer-length">
-                    <option value="15">15 minutes</option>
-                    <option value="20">20 minutes</option>
-                    <option value="25">25 minutes</option>
-                    <option value="30">30 minutes</option>
-                    <option value="35">35 minutes</option>
-                    <option value="40">40 minutes</option>
-                </select>
-                <p class="hint">Choose a focus block between 15 and 40 minutes.</p>
+                <label>Session Length (minutes)</label>
+                <input id="timer-length" type="number" value="25">
             </div>
 
             <div class="timer-display-panel">
-                <h3>Countdown</h3>
-                <div class="timer-display" id="timer-display">
-                    00:00
-                </div>
+                <div id="timer-display" class="timer-display">00:00</div>
+
                 <div class="timer-controls">
                     <button id="timer-start">Start</button>
                     <button id="timer-pause">Pause</button>
                     <button id="timer-reset">Reset</button>
                 </div>
-                <audio id="timer-sound" src="timer-sound.mp3" preload="auto"></audio>
-                <p class="hint">A sound will play when the timer reaches zero.</p>
             </div>
-        </div>
-    </section>
 
-    <!-- FOOTER -->
-    <footer class="footer-bar">
-        <div class="footer-left">
-            <ul>
-                <li><a href="#revision-tasks-sidebar">Tasks</a></li>
-                <li><a href="#goals">Goals</a></li>
-                <li><a href="#study-timer">Study Timer</a></li>
-            </ul>
         </div>
-        <div class="footer-right">
-            <ul>
-                <li>Millie McVey</li>
-                <li>1183086</li>
-                <li><a href="https://github.com/milliemcvey" target="_blank" rel="noopener">Github Profile</a></li>
-            </ul>
-        </div>
-    </footer>
+    </div>
+</section>
 
-    <!-- MAIN SCRIPT (connects JSON, logic, and UI) -->
-    <script src="script.js"></script>
+</main>
+
+<!-- ================= FOOTER ================= -->
+<footer>
+</footer>
+
+<script src="script.js"></script>
+
 </body>
 </html>

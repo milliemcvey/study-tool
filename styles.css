@@ -1,501 +1,322 @@
-/*------------INDEX------------
-1. Imports & Fonts
-2. Universal Styling
-3. Headings Styling
-4. Header Bar Styling
-5. Top Section
-6. Deadline Calendar
-7. Study Timer
-8. Goals Section
-9. Footer Bar 
-*/
+/* ------------ IMPORTS ------------ */
+@import url('https://fonts.googleapis.com/css2?family=Arimo:wght@400..700&family=Cal+Sans&display=swap');
 
-@import url('https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400..700;1,400..700&family=Cal+Sans&display=swap');
-
-:root { /*Easier to change colours at later point*/
-    --colour-1: rgb(164, 101, 151);   /* Primary */
-    --colour-2: rgb(252, 54, 146);   /* Secondary */
-    --white: rgb(241, 233, 218);   /* Relative White */
-    --black: rgb(32, 17, 29);  /* Relative Black */
-    --background: rgb(44, 25, 40);   /* Background */
-    --background-light: rgb(77, 45, 70);   /* Background but lighter */
-    --background-lightest: rgb(78, 44, 70);   /* Background but lighter */
-
+/* ------------ ROOT VARIABLES ------------ */
+:root {
+    --colour-1: rgb(164, 101, 151);
+    --colour-2: rgb(252, 54, 146);
+    --white: rgb(241, 233, 218);
+    --black: 32, 17, 29;
+    --background: rgb(44, 25, 40);
+    --background-light: rgb(77, 45, 70);
+    --background-lightest: rgb(78, 44, 70);
 }
 
-/* -------------- Universal Styling ------------- */
+/* ------------ BASE ------------ */
 body {
-    background-image: linear-gradient(var(--background),var(--background-lightest));
-    color: var(--white);
-    font-family: "Arimo", sans-serif;
-    font-size: 1.25rem;
-    overflow-x: none;
     margin: 0;
-}
-section {
-    margin: 4vh 14vw;
-}
-/* -------------- Headings Styling ------------- */
-h1 {
-    font-family: "Cal Sans", sans-serif;
-    font-size: 2.75rem;
-    letter-spacing: 3px;
-}
-h2 {
-    font-family: "Cal Sans", sans-serif;
-    font-size: 2.15rem;
-    letter-spacing: 2px;
-}
-h3 {
-    font-family: "Cal Sans", sans-serif;
-    font-size: 1.5rem;
-    letter-spacing: 1.5px;
+    font-family: "Arimo", sans-serif;
+    font-size: 1.1rem;
+    color: var(--white);
+    background: linear-gradient(var(--background), var(--background-lightest));
 }
 
-/* -------------- Header Bar Styling ------------- */
+section {
+    padding: 3rem 0;
+}
+
+.container {
+    width: min(1100px, 90%);
+    margin: 0 auto;
+}
+
+/* ------------ HEADINGS ------------ */
+h1, h2, h3 {
+    font-family: "Cal Sans", sans-serif;
+}
+
+h1 { 
+    font-size: 2.5rem; 
+}
+
+h2 { 
+    font-size: 2rem;
+}
+
+h3 { 
+    font-size: 1.3rem; 
+}
+
+/* ------------ HEADER ------------ */
 header {
     display: flex;
-    gap: 3%;
-    margin: 0;
+    justify-content: space-between;
+    align-items: center;
     padding: 0 5vw;
-    width: 100%;
     position: sticky;
     top: 0;
-    left: 0;
-    background-color: rgba(var(--black), 0.8);
-    align-items: center;
-    box-shadow: #1d0f1a;
+    background: rgba(var(--black), 0.8);
     backdrop-filter: blur(10px);
-    z-index: 1000;
     border-bottom: 1px solid var(--white);
+}
 
-}
-header h1{
-    padding-right: 35%;
-}
-header a{
-    text-decoration: none;
+header nav a {
+    margin-left: 1.5rem;
     color: var(--white);
-    font-size: 1.4rem;
+    text-decoration: none;
 }
-header a:hover{
+
+header nav a:hover {
     color: var(--colour-2);
-    transition: linear 0.5s;
-}
-.btn{
-    background-color: var(--colour-2);
-    padding: 0.5% 1%;
-    border-radius: 10px;
-    font-size: 1.3rem;
-    width: fit-content;
-    align-content: center;
-}
-/* -------------- Notifications Styling ------------- */
-#notifications{
-    background-color: var(--background-light);
-    padding: 1% 3%;
-    border-radius: 25px;
-}
-#revision-tasks-sidebar {
-    background-color: var(--background-light);
-    padding: 0 3% 2% 3%;
-    border-radius: 25px;
-    align-content: center;
-    height: 75vh;
-}
-.task-form {
-    line-height: 1.5%;
-}
-#task-form {
-    display: flex;
-    flex-direction: column;
-    gap: 1.2rem;
-    padding: 2rem;
-    border-radius: 12px;
-
-    background: rgba(var(--black), 0.35);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-
-    border: 1px solid rgba(var(--white), 0.15);
-}
-.form-row {
-    display: flex;
-    flex-direction: column;
-    gap: 0.4rem;
-}
-.form-row label {
-    font-weight: 600;
-    color: var(--white);
-    font-size: 0.95rem;
-}
-#task-form input, #task-form textarea, #task-form select {
-    width: 100%;
-    padding: 0.8rem 1rem;
-    border-radius: 8px;
-
-    background: rgba(var(--white), 0.08);
-    border: 1px solid rgba(var(--white), 0.2);
-    color: var(--white);
-
-    font-size: 0.95rem;
-    outline: none;
 }
 
-#task-form input:focus, #task-form textarea:focus, #task-form select:focus {
-    border-color: var(--colour-2);
-    background: rgba(var(--white), 0.15);
-}
-#add-task {
+/* ------------ BUTTONS ------------ */
+button {
     background: var(--colour-2);
-    color: var(--white);
-    padding: 0.9rem 1.4rem;
     border: none;
     border-radius: 8px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: 0.2s ease;
-}
-
-#add-task:hover {
-    background: var(--colour-1);
-    transform: translateY(-2px);
-}
-/* -------------- Deadline Calendar Styling ------------- */
-.month-arrow {
-    background-color: var(--colour-2);
-    border: none;
-    border-radius: 25px;
-    font-size: 1.5rem;
-    width: 3.5%;
-    height: 2.5%;
-    color: var(--white);
-}
-.calendar-header{
-    display: flex;
-    align-items: center;
-    gap: 2%;
-    justify-content: center;
-}
-.calendar-container {
-    margin-left: 0;
-    width: 100%;
-}
-.calendar-grid {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 5px;
-    margin-left: 0;
-    width: 100%;
-    margin-bottom: 2%;
-    
-}
-.day {
-    border: 1px var(--background);
-    border-radius: 10px;
-    padding: 10px;
-    min-height: 60px;
-    color: var(--background);
-    margin-left: 0; /* let the grid control the column width */
-}
-.task {
-  color:rgb(44, 44, 44);
-  font-size: 2.5em;
-  padding: 2px 4px;
-  margin-top: 4px;
-  font-size: 12px;
-  border-radius: 3px;
-}
-.day.blank {
-    background-color: var(--background-light);
-}
-.day.date {
-    background-color: white; /* white */
-}
-.day.date.has-task {
-    background-color: rgb(255, 255, 154); /* yellow */
-}
-.header-cell{
-    text-align: center;
-    font-size: 1.35em;
-    height: auto;
-    min-height: 20px;
-    color: var(--white);
-}
-/* -------------- Footer Bar Styling ------------- */
-
-footer {
-    display: flex;
-    gap: 50%;
-    padding: 1.5% 15%;
-    background-color: var(--black);
-    width: 100vw;
-    line-height: 1.25;
-    font-size: .9em;
-}
-footer:last-child{
-    border: red;
-    text-align: right;
-}
-footer a {
-    text-decoration: none;
     color: white;
-}
-footer li {
-    list-style: none;
-}
-/* -------------- Notification Layout ------------- */
-.notification-panels {
-    display: flex;
-    gap: 2rem;
-    flex-wrap: wrap;
+    padding: 0.6rem 1rem;
+    cursor: pointer;
 }
 
-.notification-card {
-    flex: 1;
-    min-width: 280px;
+button:hover {
+    background: var(--colour-1);
+}
+
+/* ------------ SECTION STYLING ------------ */
+.notification-card,
+.module-grades,
+.grade-entry,
+.goal-selector,
+.goal-visual-feedback,
+.timer-settings,
+.timer-display-panel,
+#task-form-container {
     background: rgba(var(--black), 0.35);
     border: 1px solid rgba(var(--white), 0.15);
     border-radius: 15px;
     padding: 1.5rem;
-    backdrop-filter: blur(10px);
+    margin: 1.5% 0;
 }
 
-.notification-card ul {
-    padding-left: 1rem;
+/* ------------ OVERVIEW ------------ */
+.notification-panels {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
 }
 
-.notification-empty {
-    font-size: 0.9rem;
-    opacity: 0.8;
+/* ------------ CALENDAR ------------ */
+.calendar-header {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    align-items: center;
 }
 
-/* -------------- Top Section Layout ------------- */
+.month-arrow {
+    border-radius: 50%;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+    margin-top: 1rem;
+}
+
+.day {
+    border-radius: 10px;
+    padding: 8px;
+    min-height: 70px;
+    background: white;
+    color: black;
+}
+
+.day.blank {
+    background: var(--background-light);
+}
+
+.task {
+    font-size: 0.7rem;
+}
+
+/* ------------ TASK SECTION LAYOUT ------------ */
 .top-section {
     display: flex;
     gap: 2rem;
-    align-items: flex-start;
 }
 
 .top-section-left {
     flex: 2;
 }
 
-#revision-tasks-sidebar {
+#task-form-container {
     flex: 1;
 }
 
-/* -------------- Task Cards ------------- */
+/* ------------ TASK GRID ------------ */
 .task-display {
-    max-height: 35vh;
-    overflow-y: auto;
-    margin-bottom: 1rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1rem;
 }
 
+/* ------------ TASK CARDS ------------ */
 .task-card {
     background: rgba(var(--black), 0.4);
     border: 1px solid rgba(var(--white), 0.15);
     border-radius: 12px;
     padding: 1rem;
-    margin-bottom: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
     transition: 0.2s ease;
 }
 
 .task-card:hover {
-    transform: translateY(-2px);
+    transform: translateY(-4px);
     border-color: var(--colour-2);
 }
 
-.task-card h4 {
-    margin-bottom: 0.3rem;
+.task-card button {
+    margin-top: auto;
 }
 
-.task-card h5 {
-    font-size: 0.9rem;
-    opacity: 0.85;
+/* ------------ TASK FORM ------------ */
+#task-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    padding: 0 6%;
+    margin: 2%;
 }
 
-.task-card p {
-    font-size: 0.9rem;
+.form-row {
+    display: flex;
+    flex-direction: column;
 }
 
-.task-card a {
-    color: var(--colour-2);
-    font-size: 0.9rem;
+/* Full width inputs */
+#task-name,
+#task-description,
+#task-url {
+    grid-column: span 2;
 }
 
-/* -------------- Task Filters ------------- */
-.task-filters {
-    margin-bottom: 1rem;
+#task-description {
+    min-height: 80px;
+    resize: vertical;
 }
 
-.task-filters select {
-    padding: 0.4rem;
+/* Full width button */
+#add-task {
+    grid-column: span 2;
+    width: 100%;
+}
+
+/* Inputs styling */
+#task-form input,
+#task-form textarea,
+#task-form select {
+    padding: 0.6rem;
     border-radius: 6px;
+    border: 1px solid rgba(var(--white), 0.15);
+
     background: var(--background-light);
     color: var(--white);
-    border: 1px solid rgba(var(--white), 0.2);
 }
 
-/* -------------- Goals Section ------------- */
-.goals-container {
-    display: flex;
+#task-form input:focus,
+#task-form textarea:focus,
+#task-form select:focus {
+    border: 1px solid var(--colour-2);
+}
+
+/* ------------ GRADES ------------ */
+.grades-layout {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 2rem;
-    flex-wrap: wrap;
 }
 
-.goal-selector,
-.goal-visual-feedback {
-    flex: 1;
-    min-width: 280px;
-    background: rgba(var(--black), 0.35);
-    border: 1px solid rgba(var(--white), 0.15);
-    border-radius: 15px;
-    padding: 1.5rem;
-    backdrop-filter: blur(10px);
+table {
+    width: 100%;
+    border-collapse: collapse;
 }
 
-.progress-bar-wrapper {
-    margin-top: 1rem;
+th, td {
+    padding: 0.5rem;
+    border-bottom: 1px solid rgba(var(--white), 0.2);
+}
+
+/* ------------ GOALS ------------ */
+.goals-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
 }
 
 .progress-bar-background {
-    width: 100%;
-    height: 18px;
+    height: 15px;
     background: rgba(var(--white), 0.1);
     border-radius: 10px;
-    overflow: hidden;
 }
 
 .progress-bar-fill {
     height: 100%;
-    width: 0%;
     background: linear-gradient(90deg, var(--colour-2), var(--colour-1));
-    transition: width 0.4s ease;
 }
 
-/* -------------- Grades Section ------------- */
-.grades-layout {
-    display: flex;
-    gap: 2rem;
-    flex-wrap: wrap;
-}
-
-.module-grades,
-.grade-entry {
-    flex: 1;
-    min-width: 300px;
-    background: rgba(var(--black), 0.35);
-    border: 1px solid rgba(var(--white), 0.15);
-    border-radius: 15px;
-    padding: 1.5rem;
-    backdrop-filter: blur(10px);
-}
-
-/* Tables */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 1rem;
-}
-
-th, td {
-    padding: 0.6rem;
-    text-align: left;
-    font-size: 0.9rem;
-}
-
-th {
-    border-bottom: 1px solid rgba(var(--white), 0.3);
-}
-
-td {
-    border-bottom: 1px solid rgba(var(--white), 0.1);
-}
-
-/* Grade Form Button */
-#add-grade {
-    background: var(--colour-2);
-    border: none;
-    padding: 0.7rem;
-    border-radius: 8px;
-    color: white;
-    cursor: pointer;
-}
-
-#add-grade:hover {
-    background: var(--colour-1);
-}
-
-/* -------------- Study Timer ------------- */
+/* ------------ TIMER ------------ */
 .timer-container {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 2rem;
-    flex-wrap: wrap;
-}
-
-.timer-settings,
-.timer-display-panel {
-    flex: 1;
-    min-width: 280px;
-    background: rgba(var(--black), 0.35);
-    border: 1px solid rgba(var(--white), 0.15);
-    border-radius: 15px;
-    padding: 1.5rem;
-    backdrop-filter: blur(10px);
 }
 
 .timer-display {
-    font-size: 3rem;
+    font-size: 2.5rem;
     text-align: center;
-    margin: 1rem 0;
-    letter-spacing: 2px;
 }
 
-.timer-controls {
-    display: flex;
-    gap: 1rem;
-    justify-content: center;
+/* ------------ FOOTER ------------ */
+footer {
+    padding: 1rem;
+    text-align: center;
+    background: rgb(var(--black));
 }
 
-.timer-controls button {
-    background: var(--colour-2);
-    border: none;
-    padding: 0.6rem 1rem;
-    border-radius: 8px;
-    color: white;
-    cursor: pointer;
-    transition: 0.2s ease;
-}
-
-.timer-controls button:hover {
-    background: var(--colour-1);
-}
-
-/* -------------- Form Errors & Hints ------------- */
-.form-error {
-    color: #ff6b6b;
-    font-size: 0.85rem;
-}
-
-.hint {
-    font-size: 0.8rem;
-    opacity: 0.7;
-}
-
-/* -------------- Responsive ------------- */
+/* ------------ RESPONSIVE ------------ */
 @media (max-width: 900px) {
     .top-section {
         flex-direction: column;
     }
+}
 
-    .grades-layout,
-    .goals-container,
-    .timer-container {
-        flex-direction: column;
+@media (max-width: 600px) {
+
+    .task-display {
+        grid-template-columns: 1fr;
     }
 
-    section {
-        margin: 3vh 5vw;
+    #task-form {
+        grid-template-columns: 1fr;
     }
+
+    #task-name,
+    #task-description,
+    #task-url,
+    #add-task {
+        grid-column: span 1;
+    }
+
+    h1 { font-size: 2rem; }
+    h2 { font-size: 1.6rem; }
+}
+
+/* ------------ ERRORS ------------ */
+.form-error {
+    color: #ff6b6b;
 }
