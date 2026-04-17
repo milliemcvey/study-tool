@@ -7,8 +7,8 @@
     --colour-2: rgb(252, 54, 146);
     --white: rgb(241, 233, 218);
     --black: 32, 17, 29;
-    --background: rgb(44, 25, 40);
-    --background-light: rgb(77, 45, 70);
+    --background: rgb(73, 43, 67);
+    --background-light: rgb(121, 79, 112);
     --background-lightest: rgb(78, 44, 70);
 }
 
@@ -22,7 +22,7 @@ body {
 }
 
 section {
-    padding: 3rem 0;
+    padding: 1rem 0;
 }
 
 .container {
@@ -33,10 +33,11 @@ section {
 /* ------------ HEADINGS ------------ */
 h1, h2, h3 {
     font-family: "Cal Sans", sans-serif;
+    letter-spacing: 1.75px;
 }
 
 h1 { 
-    font-size: 2.5rem; 
+    font-size: 2.25rem; 
 }
 
 h2 { 
@@ -58,6 +59,11 @@ header {
     background: rgba(var(--black), 0.8);
     backdrop-filter: blur(10px);
     border-bottom: 1px solid var(--white);
+}
+
+header h1 a {
+    text-decoration: none;
+    color: var(--white);
 }
 
 header nav a {
@@ -116,20 +122,24 @@ button:hover {
 }
 
 .month-arrow {
-    border-radius: 50%;
+    border-radius: 15px;
+    margin: 0 5%;
+    font-size: 1.45rem;
+    padding: .5% 2%;
 }
 
 .calendar-grid {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    gap: 5px;
+    gap: 2px;
     margin-top: 1rem;
 }
 
 .day {
     border-radius: 10px;
     padding: 8px;
-    min-height: 70px;
+    height: 7vh;
+    width: 7vw;
     background: white;
     color: black;
 }
@@ -139,7 +149,16 @@ button:hover {
 }
 
 .task {
-    font-size: 0.7rem;
+    background-color: var(--colour-2);
+    padding: 3% 5%;
+    border-radius: 5px;
+    margin: 2% 1%;
+    color: white;
+    border: solid 1px black;
+}
+
+.task {
+    font-size: 0.8rem;
 }
 
 /* ------------ TASK SECTION LAYOUT ------------ */
@@ -171,8 +190,11 @@ button:hover {
     padding: 1rem;
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
     transition: 0.2s ease;
+}
+.task-card h4 {
+    margin: 0;
+    margin-bottom: 0.1rem;
 }
 
 .task-card:hover {
@@ -203,11 +225,6 @@ button:hover {
 #task-description,
 #task-url {
     grid-column: span 2;
-}
-
-#task-description {
-    min-height: 80px;
-    resize: vertical;
 }
 
 /* Full width button */
@@ -246,11 +263,14 @@ table {
     border-collapse: collapse;
 }
 
-th, td {
+td {
     padding: 0.5rem;
     border-bottom: 1px solid rgba(var(--white), 0.2);
 }
 
+.day th {
+    height: 3vh;
+}
 /* ------------ GOALS ------------ */
 .goals-container {
     display: grid;
@@ -292,6 +312,24 @@ footer {
 @media (max-width: 900px) {
     .top-section {
         flex-direction: column;
+    }
+    .calendar P
+    .calendar-grid {
+        width: 50vw;
+        align-content: center;
+    }
+    h1 { 
+        font-size: 1.35em;
+    }
+    .task {
+        font-size: .55em;
+        
+    }
+    .day {
+        margin: 0;
+    }
+    nav a {
+        display: none;
     }
 }
 
