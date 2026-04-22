@@ -3,6 +3,8 @@ let revisionTasks = JSON.parse(localStorage.getItem("tasks")) || [];
 let moduleData = [];
 let gradeGoal = "2:1";
 
+let modules = JSON.parse(localStorage.getItem("modules")) || [];
+
 /* ================= STORAGE ================= */
 function saveTasks() {
     localStorage.setItem("tasks", JSON.stringify(revisionTasks));
@@ -37,6 +39,54 @@ renderTaskList();
 renderTasksOnCalendar();
 updateNotifications();
 
+/* ================= LOAD MODULES ================= */
+function loadModules() {
+    const taskModules = revisionTasks.map(t => t.module);
+
+    const allModules = [...new Set([
+        ...modules,
+        ...taskModules
+    ])];
+
+    taskModuleInput.innerHTML = `
+        <option value="">Select module</option>
+        <option value="__add_new__">+ Add new module</option>
+    `;
+
+    allModules.forEach(module => {
+        const option = document.createElement("option");
+        option.value = module;
+        option.textContent = module;
+        taskModuleInput.appendChild(option);
+    });
+
+    modules = allModules;
+    localStorage.setItem("modules", JSON.stringify(modules));
+}
+
+/* ================= MODULE ADD ================= */
+taskModuleInput.addEventListener("change", () => {
+    if (taskModuleInput.value === "__add_new__") {
+
+        const newModule = prompt("Enter module name:");
+
+        if (!newModule || !newModule.trim()) {
+            taskModuleInput.value = "";
+            return;
+        }
+
+        const cleanedModule = newModule.trim();
+
+        if (!modules.includes(cleanedModule)) {
+            modules.push(cleanedModule);
+            localStorage.setItem("modules", JSON.stringify(modules));
+        }
+
+        loadModules();
+        taskModuleInput.value = cleanedModule;
+    }
+});
+
 /* ================= LOAD JSON ================= */
 function loadJSONTasks() {
     fetch("assessments.json")
@@ -48,6 +98,8 @@ function loadJSONTasks() {
                 localStorage.setItem("jsonLoaded", "true");
                 saveTasks();
             }
+
+            loadModules(); 
 
             renderTaskList();
             renderTasksOnCalendar();
@@ -94,6 +146,13 @@ function loadCalendar(month = currentMonth, year = currentYear) {
         calendar.appendChild(cell);
     }
 
+    const totalCells = firstDayIndex + daysInMonth;
+    const remainingCells = (7 - (totalCells % 7)) % 7;
+
+    for (let i = 0; i < remainingCells; i++) {
+        calendar.appendChild(document.createElement("div")).classList.add("day","blank");
+}
+
     renderTasksOnCalendar();
 }
 
@@ -135,6 +194,8 @@ function addTask() {
 
     document.getElementById("task-form").reset();
 
+    loadModules(); 
+
     renderTaskList();
     renderTasksOnCalendar();
     updateNotifications();
@@ -156,7 +217,7 @@ function renderTaskList() {
             const card = document.createElement("div");
             card.classList.add("task-card");
 
-            const typeLabel = task.type === "exam" ? "📝 Exam" : "📚 Coursework";
+            const typeLabel = task.type === "exam" ? "Exam" : "Coursework";
 
             card.innerHTML = `
                 <h4>${task.assessmentName}</h4>
@@ -205,7 +266,8 @@ function renderTasksOnCalendar() {
 
 /* ================= NOTIFICATIONS ================= */
 function updateNotifications() {
-    const now = new Date();
+    const todayDate = new Date();
+    todayDate.setHours(0,0,0,0);
 
     overdueList.innerHTML = "";
     upcomingList.innerHTML = "";
@@ -213,7 +275,7 @@ function updateNotifications() {
     revisionTasks.forEach(task => {
         const dueDate = new Date(task.deadline);
 
-        if (dueDate < now) {
+        if (dueDate < todayDate) {
             overdueList.innerHTML += `<li>${task.assessmentName}</li>`;
         } else {
             upcomingList.innerHTML += `<li>${task.assessmentName}</li>`;
@@ -226,9 +288,15 @@ let timerInterval = null;
 let remainingSeconds = 0;
 
 document.getElementById("timer-start").onclick = startTimer;
-document.getElementById("timer-pause").onclick = () => clearInterval(timerInterval);
+
+document.getElementById("timer-pause").onclick = () => {
+    clearInterval(timerInterval);
+    timerInterval = null;
+};
+
 document.getElementById("timer-reset").onclick = () => {
     clearInterval(timerInterval);
+    timerInterval = null;
     remainingSeconds = 0;
     timerDisplay.textContent = "00:00";
 };
@@ -246,6 +314,7 @@ function startTimer() {
 
         if (remainingSeconds <= 0) {
             clearInterval(timerInterval);
+            timerInterval = null;
             if (timerSound) timerSound.play();
         }
     }, 1000);
