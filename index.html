@@ -171,26 +171,19 @@
 <!-- ================= GOALS ================= -->
 <section id="goals">
     <div class="container">
-        <h2>Goals</h2>
-
         <div class="goals-container">
-
             <div class="goal-selector">
                 <h3>Target</h3>
                 <p id="target-range"></p>
-            </div>
-
-            <div class="goal-visual-feedback">
-                <h3>Progress</h3>
-
-                <p id="goal-status"></p>
-
-                <div class="progress-bar-background">
-                    <div id="overall-progress-bar" class="progress-bar-fill"></div>
-                </div>
-
+                <select id="grade-goal">
+                    <option value="First">First</option>
+                    <option value="2:1" selected>2:1</option>
+                    <option value="2:2">2:2</option>
+                    <option value="Third">Third</option>
+                </select>
                 <p>Overall Average: <span id="overall-average"></span></p>
             </div>
+
 
         </div>
     </div>
@@ -199,10 +192,10 @@
 <!-- ================= TIMER ================= -->
 <section id="timer">
     <div class="container">
-        <h2>Study Timer</h2>
+        
+        <h3>Study Timer</h3>
 
         <div class="timer-container">
-
             <div class="timer-settings">
                 <label>Session Length (minutes)</label>
                 <input id="timer-length" type="number" value="25">

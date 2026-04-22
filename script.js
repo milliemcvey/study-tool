@@ -44,7 +44,7 @@ renderTasksOnCalendar();
 updateNotifications();
 loadGradeFormOptions();
 renderModuleAverages();
-
+updateGoals();
 /* ================= LOAD MODULES ================= */
 function loadModules() {
     const taskModules = revisionTasks.map(t => t.module);
@@ -385,6 +385,7 @@ document.getElementById("add-grade").addEventListener("click", (e) => {
     document.getElementById("grade-weight").value = "100";
 
     renderModuleAverages();
+    updateGoals();
 });
 document.getElementById("grade-module").addEventListener("change", (e) => {
     const module = e.target.value;
@@ -486,12 +487,81 @@ document.addEventListener("click", (e) => {
 
         saveGrades();
         renderModuleAverages();
+        updateGoals();
     }
 });
 /* ================= GOALS ================= */
 
+function updateGoals() {
+    const overallAvgEl = document.getElementById("overall-average");
+    const progressBar = document.getElementById("overall-progress-bar");
+    const goalStatus = document.getElementById("goal-status");
+    const targetRange = document.getElementById("target-range");
 
+    if (!grades.length) {
+        overallAvgEl.textContent = "0%";
+        progressBar.style.width = "0%";
+        goalStatus.textContent = "No grades yet";
+        return;
+    }
 
+    // ---- calculate overall average (simple mean of module averages)
+    const moduleMap = {};
+
+    grades.forEach(g => {
+        if (!moduleMap[g.module]) moduleMap[g.module] = [];
+        moduleMap[g.module].push(g);
+    });
+
+    let total = 0;
+    let count = 0;
+
+    Object.values(moduleMap).forEach(items => {
+        let weightedSum = 0;
+        let totalWeight = 0;
+
+        items.forEach(i => {
+            const w = i.weight || 0;
+            weightedSum += i.mark * (w / 100);
+            totalWeight += w;
+        });
+
+        const avg = totalWeight ? (weightedSum / (totalWeight / 100)) : 0;
+
+        total += avg;
+        count++;
+    });
+
+    const overallAvg = total / count;
+
+    // ---- convert degree target (simple mapping)
+    const targets = {
+        "First": 70,
+        "2:1": 60,
+        "2:2": 50,
+        "Third": 40
+    };
+
+    const target = targets[gradeGoal] || 60;
+
+    // ---- update UI
+    overallAvgEl.textContent = `${overallAvg.toFixed(1)}%`;
+    targetRange.textContent = `Target: ${gradeGoal} (${target}%)`;
+
+    const progress = Math.min((overallAvg / target) * 100, 100);
+    progressBar.style.width = `${progress}%`;
+
+    // ---- status
+    if (overallAvg >= target) {
+        goalStatus.textContent = "On track / above target ";
+    } else {
+        goalStatus.textContent = "Below target";
+    }
+}
+document.getElementById("grade-goal").addEventListener("change", (e) => {
+    gradeGoal = e.target.value;
+    updateGoals();
+});
 /* ================= TIMER ================= */
 let timerInterval = null;
 let remainingSeconds = 0;
