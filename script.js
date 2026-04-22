@@ -2,8 +2,8 @@
 let revisionTasks = JSON.parse(localStorage.getItem("tasks")) || [];
 let moduleData = [];
 let gradeGoal = "2:1";
-
 let modules = JSON.parse(localStorage.getItem("modules")) || [];
+
 
 /* ================= STORAGE ================= */
 function saveTasks() {
@@ -272,15 +272,61 @@ function updateNotifications() {
     overdueList.innerHTML = "";
     upcomingList.innerHTML = "";
 
+    let overdueCount = 0;
+    let upcomingCount = 0;
+
+    const futureTasks = [];
+
     revisionTasks.forEach(task => {
         const dueDate = new Date(task.deadline);
 
         if (dueDate < todayDate) {
             overdueList.innerHTML += `<li>${task.assessmentName}</li>`;
+            overdueCount++;
         } else {
-            upcomingList.innerHTML += `<li>${task.assessmentName}</li>`;
+            const daysLeft = (dueDate - todayDate) / (1000 * 60 * 60 * 24);
+
+            if (daysLeft <= 3) {
+                upcomingList.innerHTML += `<li>${task.assessmentName}</li>`;
+            } else {
+                upcomingList.innerHTML += `<li>${task.assessmentName}</li>`;
+            }
+
+            upcomingCount++;
+            futureTasks.push(task);
         }
     });
+
+    // Empty states
+    if (!overdueList.innerHTML) {
+        overdueList.innerHTML = "<li>No overdue tasks</li>";
+    }
+
+    if (!upcomingList.innerHTML) {
+        upcomingList.innerHTML = "<li>Nothing coming up</li>";
+    }
+
+    // Stats (make sure these IDs exist in your HTML)
+    const totalEl = document.getElementById("total-tasks");
+    const overdueEl = document.getElementById("overdue-count");
+    const upcomingEl = document.getElementById("upcoming-count");
+
+    if (totalEl) totalEl.textContent = revisionTasks.length;
+    if (overdueEl) overdueEl.textContent = overdueCount;
+    if (upcomingEl) upcomingEl.textContent = upcomingCount;
+
+    // Next deadline
+    const nextEl = document.getElementById("next-deadline");
+
+    if (nextEl) {
+        const sorted = futureTasks.sort((a,b) => new Date(a.deadline) - new Date(b.deadline));
+
+        if (sorted.length > 0) {
+            nextEl.textContent = `Next: ${sorted[0].assessmentName} (${formatDate(sorted[0].deadline)})`;
+        } else {
+            nextEl.textContent = "No upcoming deadlines";
+        }
+    }
 }
 
 /* ================= TIMER ================= */

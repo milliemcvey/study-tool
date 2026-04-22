@@ -62,8 +62,8 @@ header {
     padding: 0 5vw;
     position: sticky;
     top: 0;
-    background: rgba(var(--black), 0.8);
-    backdrop-filter: blur(10px);
+    background: rgba(var(--black), 0.75);
+    backdrop-filter: blur(8px);
     border-bottom: 1px solid var(--white);
     z-index: 1000;
 }
@@ -81,6 +81,7 @@ header nav a {
 
 header nav a:hover {
     color: var(--colour-2);
+    transition: linear
 }
 
 /* ------------ BUTTONS ------------ */
@@ -117,36 +118,59 @@ button:hover {
 /* ------------ OVERVIEW ------------ */
 .stats-bar {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-    gap: 1rem;
-    margin-bottom: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1.5rem;
+    margin: 2vh 30vw;
+    
 }
 
 .stat {
-    background: rgba(var(--white), 0.05);
-    padding: 1rem;
-    border-radius: 10px;
+    background: rgba(var(--black), 0.5);
+    border: 1px solid rgba(var(--white), 0.1);
+    border-radius: 15px;
+    padding: 1.2rem;
     text-align: center;
+    transition: 0.2s;
+}
+
+.stat:hover {
+    transform: translateY(-4px);
+    border-color: var(--colour-2);
 }
 
 .stat h4 {
     margin: 0;
-    font-size: 1.5rem;
+    font-size: 2rem;
     color: var(--colour-2);
+}
+
+.stat p {
+    margin: 0.3rem 0 0;
+    opacity: 0.8;
+    font-size: 0.9rem;
+}
+#overdue-count {
+    color: #ff6b6b;
+}
+
+#upcoming-count {
+    color: #51cf66;
 }
 .notification-panels {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 1.5rem;
 }
+.notification-card {
+    background-color: rgba(var(--black), 0.7);
+}
 .notification-card ul {
     list-style: none;
     padding: 0;
     margin: 0;
 }
-
 .notification-card li {
-    background: rgba(var(--white), 0.5);
+    background: rgba(255, 255, 255,0.1);
     border-left: 4px solid var(--colour-2);
     padding: 0.6rem 0.8rem;
     margin: 0.5rem 0;
@@ -155,7 +179,7 @@ button:hover {
 }
 
 .notification-card li:hover {
-    background: rgba(var(--white), 0.1);
+    background: rgba(255, 255, 255,0.25);
     transform: translateX(4px);
 }
 #overdue-task-list li {
