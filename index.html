@@ -121,25 +121,8 @@
 <section id="grades">
     <div class="container">
         <h2>Grades</h2>
-
-        <div class="grades-layout">
-
-            <div class="module-grades">
-                <h3>Module Averages</h3>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Module</th>
-                            <th>Average</th>
-                        </tr>
-                    </thead>
-                    <tbody id="module-grades-body"></tbody>
-                </table>
-            </div>
-
-            <div class="grade-entry">
-                <h3>Add Grade</h3>
-
+        <div class="grade-entry">
+                <h4>Add Grade</h4>
                 <form>
                     <div class="form-row">
                         <label>Module</label>
@@ -156,12 +139,31 @@
                         <input id="grade-mark" type="number">
                     </div>
 
+                    <div class="form-row">
+                        <label>Weight (%)</label>
+                        <input id="grade-weight" type="number" min="0" max="100" value="100">
+                    </div>
+
                     <button id="add-grade">Add Grade</button>
                 </form>
 
                 <p id="grade-form-error" class="form-error"></p>
             </div>
+        <div class="grades-layout">
 
+            <div class="module-grades">
+                <h3>Module Averages</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Module</th>
+                            <th>Average</th>
+                        </tr>
+                    </thead>
+                    <tbody id="module-grades-body"></tbody>
+                </table>
+                <div id="module-breakdown"></div>
+            </div>
         </div>
     </div>
 </section>

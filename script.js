@@ -3,11 +3,15 @@ let revisionTasks = JSON.parse(localStorage.getItem("tasks")) || [];
 let moduleData = [];
 let gradeGoal = "2:1";
 let modules = JSON.parse(localStorage.getItem("modules")) || [];
-
+let grades = JSON.parse(localStorage.getItem("grades")) || [];
 
 /* ================= STORAGE ================= */
 function saveTasks() {
     localStorage.setItem("tasks", JSON.stringify(revisionTasks));
+}
+
+function saveGrades() {
+    localStorage.setItem("grades", JSON.stringify(grades));
 }
 
 /* ================= ELEMENT REFERENCES ================= */
@@ -38,6 +42,8 @@ loadJSONTasks();
 renderTaskList();
 renderTasksOnCalendar();
 updateNotifications();
+loadGradeFormOptions();
+renderModuleAverages();
 
 /* ================= LOAD MODULES ================= */
 function loadModules() {
@@ -62,6 +68,8 @@ function loadModules() {
 
     modules = allModules;
     localStorage.setItem("modules", JSON.stringify(modules));
+    
+    loadGradeFormOptions();
 }
 
 /* ================= MODULE ADD ================= */
@@ -151,7 +159,7 @@ function loadCalendar(month = currentMonth, year = currentYear) {
 
     for (let i = 0; i < remainingCells; i++) {
         calendar.appendChild(document.createElement("div")).classList.add("day","blank");
-}
+    }
 
     renderTasksOnCalendar();
 }
@@ -195,7 +203,8 @@ function addTask() {
     document.getElementById("task-form").reset();
 
     loadModules(); 
-
+    loadGradeFormOptions();
+    
     renderTaskList();
     renderTasksOnCalendar();
     updateNotifications();
@@ -284,50 +293,185 @@ function updateNotifications() {
             overdueList.innerHTML += `<li>${task.assessmentName}</li>`;
             overdueCount++;
         } else {
-            const daysLeft = (dueDate - todayDate) / (1000 * 60 * 60 * 24);
-
-            if (daysLeft <= 3) {
-                upcomingList.innerHTML += `<li>${task.assessmentName}</li>`;
-            } else {
-                upcomingList.innerHTML += `<li>${task.assessmentName}</li>`;
-            }
-
+            upcomingList.innerHTML += `<li>${task.assessmentName}</li>`;
             upcomingCount++;
             futureTasks.push(task);
         }
     });
 
-    // Empty states
-    if (!overdueList.innerHTML) {
-        overdueList.innerHTML = "<li>No overdue tasks</li>";
-    }
+    if (!overdueList.innerHTML) overdueList.innerHTML = "<li>No overdue tasks</li>";
+    if (!upcomingList.innerHTML) upcomingList.innerHTML = "<li>Nothing coming up</li>";
 
-    if (!upcomingList.innerHTML) {
-        upcomingList.innerHTML = "<li>Nothing coming up</li>";
-    }
-
-    // Stats (make sure these IDs exist in your HTML)
-    const totalEl = document.getElementById("total-tasks");
-    const overdueEl = document.getElementById("overdue-count");
-    const upcomingEl = document.getElementById("upcoming-count");
-
-    if (totalEl) totalEl.textContent = revisionTasks.length;
-    if (overdueEl) overdueEl.textContent = overdueCount;
-    if (upcomingEl) upcomingEl.textContent = upcomingCount;
-
-    // Next deadline
-    const nextEl = document.getElementById("next-deadline");
-
-    if (nextEl) {
-        const sorted = futureTasks.sort((a,b) => new Date(a.deadline) - new Date(b.deadline));
-
-        if (sorted.length > 0) {
-            nextEl.textContent = `Next: ${sorted[0].assessmentName} (${formatDate(sorted[0].deadline)})`;
-        } else {
-            nextEl.textContent = "No upcoming deadlines";
-        }
-    }
+    document.getElementById("total-tasks").textContent = revisionTasks.length;
+    document.getElementById("overdue-count").textContent = overdueCount;
+    document.getElementById("upcoming-count").textContent = upcomingCount;
 }
+
+/* ================= GRADES ================= */
+function loadGradeFormOptions() {
+    const gradeModule = document.getElementById("grade-module");
+    const gradeComponent = document.getElementById("grade-component");
+
+    gradeModule.innerHTML = `<option value="">Select module</option>`;
+
+    modules.forEach(module => {
+        const option = document.createElement("option");
+        option.value = module;
+        option.textContent = module;
+        gradeModule.appendChild(option);
+    });
+
+    gradeModule.onchange = () => {
+        const selectedModule = gradeModule.value;
+
+        gradeComponent.innerHTML = `<option value="">Select component</option>`;
+
+        revisionTasks
+            .filter(t => t.module === selectedModule)
+            .forEach(task => {
+                const option = document.createElement("option");
+                option.value = task.assessmentName;
+                option.textContent = task.assessmentName;
+                gradeComponent.appendChild(option);
+            });
+    };
+}
+
+document.getElementById("add-grade").addEventListener("click", (e) => {
+    e.preventDefault();
+
+    const module = document.getElementById("grade-module").value;
+    const component = document.getElementById("grade-component").value;
+    const mark = parseFloat(document.getElementById("grade-mark").value);
+    const weight = parseFloat(document.getElementById("grade-weight").value);
+
+    const error = document.getElementById("grade-form-error");
+    error.textContent = "";
+
+    if (
+        !module ||
+        !component ||
+        isNaN(mark) ||
+        isNaN(weight) ||
+        mark < 0 || mark > 100 ||
+        weight < 0 || weight > 100
+    ) {
+        error.textContent = "Enter valid mark and weight (0–100).";
+        return;
+    }
+
+    const existingIndex = grades.findIndex(
+        g => g.module === module && g.component === component
+    );
+
+    if (existingIndex !== -1) {
+        grades[existingIndex].mark = mark;
+        grades[existingIndex].weight = weight;
+    } else {
+        grades.push({ module, component, mark, weight });
+    }
+
+    saveGrades();
+
+    document.getElementById("grade-mark").value = "";
+    document.getElementById("grade-weight").value = "100";
+
+    renderModuleAverages();
+});
+
+function renderModuleAverages() {
+    const tbody = document.getElementById("module-grades-body");
+    const breakdown = document.getElementById("module-breakdown");
+
+    tbody.innerHTML = "";
+    breakdown.innerHTML = "";
+
+    const moduleMap = {};
+
+    // Group grades by module
+    grades.forEach(g => {
+        if (!moduleMap[g.module]) moduleMap[g.module] = [];
+        moduleMap[g.module].push(g);
+    });
+
+    // Render each module
+    Object.keys(moduleMap).forEach(module => {
+        const items = moduleMap[module];
+
+        let totalWeight = 0;
+        let weightedSum = 0;
+
+        // Weighted calculation
+        items.forEach(i => {
+            const w = i.weight || 0;
+            weightedSum += i.mark * (w / 100);
+            totalWeight += w;
+        });
+
+        const avg = totalWeight > 0
+            ? (weightedSum / (totalWeight / 100))
+            : 0;
+
+        // TABLE ROW
+        const row = document.createElement("tr");
+        row.innerHTML = `
+            <td>${module}</td>
+            <td>${avg.toFixed(1)}%</td>
+        `;
+        tbody.appendChild(row);
+
+        // BREAKDOWN CARD
+        const group = document.createElement("div");
+        group.className = "module-group";
+
+        group.innerHTML = `
+            <h4>${module}</h4>
+
+            ${items.map(i => `
+                <div class="component-item">
+                    <div>
+                        <div>${i.component}</div>
+                        <div class="component-meta">
+                            Weight: ${i.weight || 0}%
+                        </div>
+                    </div>
+
+                    <div class="component-mark">
+                        ${i.mark}%
+                    </div>
+
+                    <button type="button"
+                        class="delete-grade-btn"
+                        data-module="${module}"
+                        data-component="${i.component}">
+                        Delete
+                    </button>
+                </div>
+            `).join("")}
+        `;
+
+        breakdown.appendChild(group);
+    });
+}
+document.addEventListener("click", (e) => {
+    if (e.target.classList.contains("delete-grade-btn")) {
+
+        const module = e.target.getAttribute("data-module");
+        const component = e.target.getAttribute("data-component");
+
+        grades = grades.filter(g =>
+            !(g.module === module && g.component === component)
+        );
+
+        saveGrades();
+        renderModuleAverages();
+    }
+});
+
+/* ================= GOALS ================= */
+
+
+
 
 /* ================= TIMER ================= */
 let timerInterval = null;
@@ -361,7 +505,6 @@ function startTimer() {
         if (remainingSeconds <= 0) {
             clearInterval(timerInterval);
             timerInterval = null;
-            if (timerSound) timerSound.play();
         }
     }, 1000);
 }
@@ -371,6 +514,10 @@ function updateTimerDisplay() {
     const s = String(remainingSeconds % 60).padStart(2,"0");
     timerDisplay.textContent = `${m}:${s}`;
 }
+
+/* ================= FOOTER ================= */
+
+
 
 /* ================= UTIL ================= */
 function formatDate(date) {
