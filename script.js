@@ -320,7 +320,7 @@ function loadGradeFormOptions() {
         option.textContent = module;
         gradeModule.appendChild(option);
     });
-
+    
     gradeModule.onchange = () => {
         const selectedModule = gradeModule.value;
 
@@ -336,7 +336,11 @@ function loadGradeFormOptions() {
             });
     };
 }
-
+function getModuleTotalWeight(module) {
+    return grades
+        .filter(g => g.module === module)
+        .reduce((sum, g) => sum + (g.weight || 0), 0);
+}
 document.getElementById("add-grade").addEventListener("click", (e) => {
     e.preventDefault();
 
@@ -360,17 +364,21 @@ document.getElementById("add-grade").addEventListener("click", (e) => {
         return;
     }
 
-    const existingIndex = grades.findIndex(
+        const existingIndex = grades.findIndex(
         g => g.module === module && g.component === component
-    );
+        );
 
-    if (existingIndex !== -1) {
-        grades[existingIndex].mark = mark;
-        grades[existingIndex].weight = weight;
-    } else {
-        grades.push({ module, component, mark, weight });
+        // prevent double-counting when editing same component
+        let currentTotal = grades
+        .filter(g => !(g.module === module && g.component === component))
+        .reduce((sum, g) => sum + (g.weight || 0), 0);
+
+        // enforce max 100%
+        if (currentTotal + weight > 100) {
+        error.textContent =
+            `Total module weight cannot exceed 100% (currently ${currentTotal}%).`;
+        return;
     }
-
     saveGrades();
 
     document.getElementById("grade-mark").value = "";
@@ -378,7 +386,18 @@ document.getElementById("add-grade").addEventListener("click", (e) => {
 
     renderModuleAverages();
 });
+document.getElementById("grade-module").addEventListener("change", (e) => {
+    const module = e.target.value;
 
+    const total = getModuleTotalWeight(module);
+
+    let info = document.getElementById("module-weight-info");
+    if (!info) return;
+
+    info.textContent = module
+        ? `Current module weight: ${total}%`
+        : "";
+});
 function renderModuleAverages() {
     const tbody = document.getElementById("module-grades-body");
     const breakdown = document.getElementById("module-breakdown");
@@ -440,12 +459,14 @@ function renderModuleAverages() {
                         ${i.mark}%
                     </div>
 
-                    <button type="button"
-                        class="delete-grade-btn"
-                        data-module="${module}"
-                        data-component="${i.component}">
-                        Delete
-                    </button>
+                    <div class="grade-actions">
+                        <button type="button"
+                            class="delete-grade-btn"
+                            data-module="${module}"
+                            data-component="${i.component}">
+                            Delete
+                        </button>
+                    </div>
                 </div>
             `).join("")}
         `;
@@ -467,9 +488,7 @@ document.addEventListener("click", (e) => {
         renderModuleAverages();
     }
 });
-
 /* ================= GOALS ================= */
-
 
 
 
@@ -514,10 +533,6 @@ function updateTimerDisplay() {
     const s = String(remainingSeconds % 60).padStart(2,"0");
     timerDisplay.textContent = `${m}:${s}`;
 }
-
-/* ================= FOOTER ================= */
-
-
 
 /* ================= UTIL ================= */
 function formatDate(date) {
