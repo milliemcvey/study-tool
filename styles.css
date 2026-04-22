@@ -727,8 +727,79 @@ td {
     min-width: 90px;
     font-weight: bold;
 }
+
 /* ------------ FOOTER ------------ */
 
+.site-footer {
+    margin-top: 3rem;
+    padding: 2.5rem 0;
+
+    background: rgba(var(--black), 0.85);
+    border-top: 1px solid rgba(var(--white), 0.15);
+}
+
+/* layout */
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+/* left */
+.footer-left h3 {
+    margin: 0;
+    color: var(--colour-2);
+    font-size: 1.4rem;
+}
+
+.footer-left p {
+    margin: 0.3rem 0 0;
+    opacity: 0.8;
+}
+
+/* links */
+.footer-links {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.footer-links a {
+    color: var(--white);
+    text-decoration: none;
+    font-size: 0.95rem;
+
+    padding: 0.4rem 0.7rem;
+    border-radius: 6px;
+
+    transition: 0.2s;
+}
+
+.footer-links a:hover {
+    background: var(--colour-2);
+    color: white;
+}
+
+/* right */
+.footer-right {
+    opacity: 0.7;
+    font-size: 0.9rem;
+}
+
+/* responsive */
+@media (max-width: 700px) {
+    .footer-content {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .footer-links {
+        justify-content: center;
+    }
+}
 
 /* ------------ RESPONSIVE ------------ */
 @media (max-width: 800px) {
