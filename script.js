@@ -1,11 +1,11 @@
-/* ================= GLOBAL STATE ================= */
-let revisionTasks = JSON.parse(localStorage.getItem("tasks")) || [];
-let moduleData = [];
-let gradeGoal = "2:1";
-let modules = JSON.parse(localStorage.getItem("modules")) || [];
-let grades = JSON.parse(localStorage.getItem("grades")) || [];
+/*  GLOBAL STATE  */
+let revisionTasks = JSON.parse(localStorage.getItem("tasks")) || [];// Load saved tasks
+let moduleData = []; // Placeholder for imported module info
+let gradeGoal = "2:1"; // Default grade target
+let modules = JSON.parse(localStorage.getItem("modules")) || []; // Saved modules
+let grades = JSON.parse(localStorage.getItem("grades")) || []; // Saved grade entries
 
-/* ================= STORAGE ================= */
+/*  STORAGE  */
 function saveTasks() {
     localStorage.setItem("tasks", JSON.stringify(revisionTasks));
 }
@@ -14,7 +14,7 @@ function saveGrades() {
     localStorage.setItem("grades", JSON.stringify(grades));
 }
 
-/* ================= ELEMENT REFERENCES ================= */
+/*  ELEMENT REFERENCES  */
 const calendar = document.getElementById("calendar");
 const monthYear = document.getElementById("month-year");
 
@@ -30,29 +30,30 @@ const upcomingList = document.getElementById("upcoming-deadline-list");
 const timerDisplay = document.getElementById("timer-display");
 const timerSound = document.getElementById("timer-sound");
 
-/* ================= DATE ================= */
+/*  DATE  */
 const today = new Date().toISOString().split("T")[0];
-let currentDate = new Date();
+let currentDate = new Date();// Tracks visible calendar month
 let currentMonth = currentDate.getMonth();
 let currentYear = currentDate.getFullYear();
 
-/* ================= INIT ================= */
-loadCalendar();
-loadJSONTasks();
-renderTaskList();
-renderTasksOnCalendar();
-updateNotifications();
-loadGradeFormOptions();
-renderModuleAverages();
+/*  INIT  */
+loadCalendar(); // Build calendar UI
+loadJSONTasks(); // Load predefined tasks (if any)
+renderTaskList(); // Show tasks in sidebar
+renderTasksOnCalendar(); // Add tasks to calendar days
+updateNotifications(); // Refresh overdue/upcoming lists
+loadGradeFormOptions(); // Populate grade dropdowns
+renderModuleAverages(); // Display module grade averages
 
-/* ================= LOAD MODULES ================= */
+
+/*  LOAD MODULES  */
 function loadModules() {
-    const taskModules = revisionTasks.map(t => t.module);
+    const taskModules = revisionTasks.map(t => t.module); // Modules referenced by tasks
 
     const allModules = [...new Set([
         ...modules,
         ...taskModules
-    ])];
+    ])]; // Merge
 
     taskModuleInput.innerHTML = `
         <option value="">Select module</option>
@@ -66,19 +67,20 @@ function loadModules() {
         taskModuleInput.appendChild(option);
     });
 
-    modules = allModules;
+    modules = allModules; // Updates stored list
     localStorage.setItem("modules", JSON.stringify(modules));
-    
-    loadGradeFormOptions();
+
+    loadGradeFormOptions(); // Refresh grade form dropdowns
 }
 
-/* ================= MODULE ADD ================= */
+
+/*  MODULE ADD  */
 taskModuleInput.addEventListener("change", () => {
     if (taskModuleInput.value === "__add_new__") {
 
         const newModule = prompt("Enter module name:");
 
-        if (!newModule || !newModule.trim()) {
+        if (!newModule || !newModule.trim()) { // reset
             taskModuleInput.value = "";
             return;
         }
@@ -86,28 +88,29 @@ taskModuleInput.addEventListener("change", () => {
         const cleanedModule = newModule.trim();
 
         if (!modules.includes(cleanedModule)) {
-            modules.push(cleanedModule);
+            modules.push(cleanedModule); // Adds new module
             localStorage.setItem("modules", JSON.stringify(modules));
         }
 
-        loadModules();
-        taskModuleInput.value = cleanedModule;
+        loadModules(); // dropdown
+        taskModuleInput.value = cleanedModule; // Auto-selects new module
     }
 });
 
-/* ================= LOAD JSON ================= */
+
+/*  LOAD JSON  */
 function loadJSONTasks() {
     fetch("assessments.json")
         .then(res => res.json())
         .then(data => {
 
-            if (!localStorage.getItem("jsonLoaded")) {
+            if (!localStorage.getItem("jsonLoaded")) { // Only imports once
                 revisionTasks = [...revisionTasks, ...data];
                 localStorage.setItem("jsonLoaded", "true");
                 saveTasks();
             }
 
-            loadModules(); 
+            loadModules(); // Syncs modules with imported tasks
 
             renderTaskList();
             renderTasksOnCalendar();
@@ -116,9 +119,10 @@ function loadJSONTasks() {
         .catch(() => console.warn("assessments.json not found"));
 }
 
-/* ================= CALENDAR ================= */
+
+/*  CALENDAR  */
 function loadCalendar(month = currentMonth, year = currentYear) {
-    calendar.innerHTML = "";
+    calendar.innerHTML = ""; // Clears previous month
 
     const firstDay = new Date(year, month, 1);
     const daysInMonth = new Date(year, month + 1, 0).getDate();
@@ -135,7 +139,7 @@ function loadCalendar(month = currentMonth, year = currentYear) {
         calendar.appendChild(d);
     });
 
-    const firstDayIndex = (firstDay.getDay() + 6) % 7;
+    const firstDayIndex = (firstDay.getDay() + 6) % 7; // Converts Sun–Sat → Mon–Sun
 
     for (let i = 0; i < firstDayIndex; i++) {
         calendar.appendChild(document.createElement("div")).classList.add("day","blank");
@@ -146,7 +150,7 @@ function loadCalendar(month = currentMonth, year = currentYear) {
         const cell = document.createElement("div");
 
         cell.classList.add("day","date");
-        if (dateString === today) cell.classList.add("today");
+        if (dateString === today) cell.classList.add("today"); // Highlights today
 
         cell.setAttribute("data-date", dateString);
         cell.innerHTML = `<strong>${d}</strong><div class="tasks"></div>`;
@@ -155,29 +159,30 @@ function loadCalendar(month = currentMonth, year = currentYear) {
     }
 
     const totalCells = firstDayIndex + daysInMonth;
-    const remainingCells = (7 - (totalCells % 7)) % 7;
+    const remainingCells = (7 - (totalCells % 7)) % 7; // Fills final row
 
     for (let i = 0; i < remainingCells; i++) {
         calendar.appendChild(document.createElement("div")).classList.add("day","blank");
     }
 
-    renderTasksOnCalendar();
+    renderTasksOnCalendar(); // Adds tasks to new month
 }
 
-/* ================= MONTH NAV ================= */
+/*  MONTH NAV  */
 document.getElementById("prev-month").onclick = () => {
-    currentMonth = (currentMonth + 11) % 12;
-    if (currentMonth === 11) currentYear--;
+    currentMonth = (currentMonth + 11) % 12; // Move back one month
+    if (currentMonth === 11) currentYear--; 
     loadCalendar();
 };
 
 document.getElementById("next-month").onclick = () => {
-    currentMonth = (currentMonth + 1) % 12;
-    if (currentMonth === 0) currentYear++;
+    currentMonth = (currentMonth + 1) % 12; // Move forward one month
+    if (currentMonth === 0) currentYear++; 
     loadCalendar();
 };
 
-/* ================= ADD TASK ================= */
+
+/*  ADD TASK  */
 document.getElementById("task-form").addEventListener("submit", e => {
     e.preventDefault();
     addTask();
@@ -194,7 +199,7 @@ function addTask() {
     taskFormError.textContent = "";
 
     if (!task.assessmentName || !task.deadline || !task.module || !task.type) {
-        return showError("Please fill in all required fields.");
+        return showError("Please fill in all required fields."); // Basic validation
     }
 
     revisionTasks.push(task);
@@ -202,9 +207,9 @@ function addTask() {
 
     document.getElementById("task-form").reset();
 
-    loadModules(); 
+    loadModules(); // Refresh module dropdown
     loadGradeFormOptions();
-    
+
     renderTaskList();
     renderTasksOnCalendar();
     updateNotifications();
@@ -214,13 +219,14 @@ function showError(msg) {
     taskFormError.textContent = msg;
 }
 
-/* ================= TASK LIST ================= */
+
+/*  TASK LIST  */
 function renderTaskList() {
     const container = document.getElementById("task-list");
     container.innerHTML = "";
 
     revisionTasks
-        .sort((a,b) => a.deadline.localeCompare(b.deadline))
+        .sort((a,b) => a.deadline.localeCompare(b.deadline)) // Sort by date
         .forEach((task, index) => {
 
             const card = document.createElement("div");
@@ -242,13 +248,13 @@ function renderTaskList() {
     addDeleteListeners();
 }
 
-/* ================= DELETE ================= */
+/*  DELETE  */
 function addDeleteListeners() {
     document.querySelectorAll(".delete-btn").forEach(btn => {
         btn.onclick = () => {
             const index = btn.getAttribute("data-index");
 
-            revisionTasks.splice(index, 1);
+            revisionTasks.splice(index, 1); // Remove task
             saveTasks();
 
             renderTaskList();
@@ -258,9 +264,9 @@ function addDeleteListeners() {
     });
 }
 
-/* ================= CALENDAR TASKS ================= */
+/*  CALENDAR TASKS  */
 function renderTasksOnCalendar() {
-    document.querySelectorAll(".tasks").forEach(t => t.innerHTML = "");
+    document.querySelectorAll(".tasks").forEach(t => t.innerHTML = ""); // Clear old tasks
 
     revisionTasks.forEach(task => {
         const cell = document.querySelector(`.day[data-date="${task.deadline}"]`);
@@ -268,15 +274,15 @@ function renderTasksOnCalendar() {
             const div = document.createElement("div");
             div.classList.add("task");
             div.textContent = task.assessmentName;
-            cell.querySelector(".tasks").appendChild(div);
+            cell.querySelector(".tasks").appendChild(div); // Add task to date cell
         }
     });
 }
 
-/* ================= NOTIFICATIONS ================= */
+/*  NOTIFICATIONS  */
 function updateNotifications() {
     const todayDate = new Date();
-    todayDate.setHours(0,0,0,0);
+    todayDate.setHours(0,0,0,0); // Compare dates at midnight
 
     overdueList.innerHTML = "";
     upcomingList.innerHTML = "";
@@ -307,7 +313,7 @@ function updateNotifications() {
     document.getElementById("upcoming-count").textContent = upcomingCount;
 }
 
-/* ================= GRADES ================= */
+/*  GRADES — FORM OPTIONS  */
 function loadGradeFormOptions() {
     const gradeModule = document.getElementById("grade-module");
     const gradeComponent = document.getElementById("grade-component");
@@ -336,11 +342,15 @@ function loadGradeFormOptions() {
             });
     };
 }
+
+/*  MODULE WEIGHT (if used later)  */
 function getModuleTotalWeight(module) {
     return grades
         .filter(g => g.module === module)
         .reduce((sum, g) => sum + (g.weight || 0), 0);
 }
+
+/*  ADD GRADE  */
 document.getElementById("add-grade").addEventListener("click", (e) => {
     e.preventDefault();
 
@@ -351,12 +361,7 @@ document.getElementById("add-grade").addEventListener("click", (e) => {
     const error = document.getElementById("grade-form-error");
     error.textContent = "";
 
-    if (
-        !module ||
-        !component ||
-        isNaN(mark) ||
-        mark < 0 || mark > 100
-    ) {
+    if (!module || !component || isNaN(mark) || mark < 0 || mark > 100) {
         error.textContent = "Enter a valid mark (0–100).";
         return;
     }
@@ -368,9 +373,9 @@ document.getElementById("add-grade").addEventListener("click", (e) => {
     const newGrade = { module, component, mark };
 
     if (existingIndex !== -1) {
-        grades[existingIndex] = newGrade;
+        grades[existingIndex] = newGrade; // Update existing
     } else {
-        grades.push(newGrade);
+        grades.push(newGrade); // Add new
     }
 
     saveGrades();
@@ -380,9 +385,12 @@ document.getElementById("add-grade").addEventListener("click", (e) => {
     renderModuleAverages();
     updateGoals();
 });
+
 document.getElementById("grade-module").addEventListener("change", (e) => {
-    const module = e.target.value;
+    const module = e.target.value; // Currently unused
 });
+
+/*  RENDER MODULE AVERAGES  */
 function renderModuleAverages() {
     const tbody = document.getElementById("module-grades-body");
     const breakdown = document.getElementById("module-breakdown");
@@ -400,8 +408,7 @@ function renderModuleAverages() {
     Object.keys(moduleMap).forEach(module => {
         const items = moduleMap[module];
 
-        const avg =
-            items.reduce((sum, i) => sum + i.mark, 0) / items.length;
+        const avg = items.reduce((sum, i) => sum + i.mark, 0) / items.length;
 
         const row = document.createElement("tr");
         row.innerHTML = `
@@ -439,6 +446,7 @@ function renderModuleAverages() {
         breakdown.appendChild(group);
     });
 }
+/*  DELETE GRADE  */
 document.addEventListener("click", (e) => {
     if (e.target.classList.contains("delete-grade-btn")) {
 
@@ -453,8 +461,8 @@ document.addEventListener("click", (e) => {
         renderModuleAverages();
     }
 });
-/* ================= GOALS ================= */
 
+/*  GOALS  */
 function updateGoals() {
     const overallAvgEl = document.getElementById("overall-average");
     const progressBar = document.getElementById("overall-progress-bar");
@@ -468,7 +476,6 @@ function updateGoals() {
         return;
     }
 
-    // ---- calculate overall average (simple mean of module averages)
     const moduleMap = {};
 
     grades.forEach(g => {
@@ -480,16 +487,13 @@ function updateGoals() {
     let count = 0;
 
     Object.values(moduleMap).forEach(items => {
-        const avg =
-            items.reduce((sum, i) => sum + i.mark, 0) / items.length;
-
+        const avg = items.reduce((sum, i) => sum + i.mark, 0) / items.length;
         total += avg;
         count++;
-        });
+    });
 
     const overallAvg = total / count;
 
-    // ---- convert degree target (simple mapping)
     const targets = {
         "First": 70,
         "2:1": 60,
@@ -499,26 +503,22 @@ function updateGoals() {
 
     const target = targets[gradeGoal] || 60;
 
-    // ---- update UI
     overallAvgEl.textContent = `${overallAvg.toFixed(1)}%`;
     targetRange.textContent = `Target: ${gradeGoal} (${target}%)`;
 
     const progress = Math.min((overallAvg / target) * 100, 100);
     progressBar.style.width = `${progress}%`;
 
-    // ---- status
-    if (overallAvg >= target) {
-        goalStatus.textContent = "On track / above target ";
-    } else {
-        goalStatus.textContent = "Below target";
-    }
+    goalStatus.textContent =
+        overallAvg >= target ? "On track / above target " : "Below target";
 }
+
 document.getElementById("grade-goal").addEventListener("change", (e) => {
     gradeGoal = e.target.value;
     updateGoals();
 });
 
-/* ================= TIMER ================= */
+/*  TIMER  */
 let timerInterval = null;
 let remainingSeconds = 0;
 
@@ -540,7 +540,8 @@ function startTimer() {
     if (timerInterval) return;
 
     if (!remainingSeconds) {
-        remainingSeconds = parseInt(document.getElementById("timer-length").value) * 60;
+        remainingSeconds =
+            parseInt(document.getElementById("timer-length").value) * 60;
     }
 
     timerInterval = setInterval(() => {
@@ -560,7 +561,7 @@ function updateTimerDisplay() {
     timerDisplay.textContent = `${m}:${s}`;
 }
 
-/* ================= UTIL ================= */
+/*  UTIL  */
 function formatDate(date) {
     return new Date(date).toLocaleDateString("en-GB");
 }
