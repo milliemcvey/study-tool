@@ -178,7 +178,7 @@ document.getElementById("next-month").onclick = () => {
 };
 
 /* ================= ADD TASK ================= */
-document.getElementById("task-form").addEventListener("submit", e => {
+document.getElementById("add-task").addEventListener("click", (e) => {
     e.preventDefault();
     addTask();
 });
@@ -364,28 +364,26 @@ document.getElementById("add-grade").addEventListener("click", (e) => {
         return;
     }
 
-        const existingIndex = grades.findIndex(
-    g => g.module === module && g.component === component);
-
-    if (existingIndex !== -1) {
-        // update existing grade
-        grades[existingIndex] = { module, component, mark, weight };
-    } else {
-        // add new grade
-        grades.push({ module, component, mark, weight });
-    }
-
-        // prevent double-counting when editing same component
-        let currentTotal = grades
+    let currentTotal = grades
         .filter(g => !(g.module === module && g.component === component))
         .reduce((sum, g) => sum + (g.weight || 0), 0);
 
-        // enforce max 100%
-        if (currentTotal + weight > 100) {
+    if (currentTotal + weight > 100) {
         error.textContent =
             `Total module weight cannot exceed 100% (currently ${currentTotal}%).`;
         return;
     }
+
+    const existingIndex = grades.findIndex(
+        g => g.module === module && g.component === component
+    );
+
+    if (existingIndex !== -1) {
+        grades[existingIndex] = { module, component, mark, weight };
+    } else {
+        grades.push({ module, component, mark, weight });
+    }
+
     saveGrades();
 
     document.getElementById("grade-mark").value = "";
@@ -479,6 +477,21 @@ function renderModuleAverages() {
             `).join("")}
         `;
 
+        document.querySelectorAll(".delete-grade-btn").forEach(btn => {
+            btn.onclick = () => {
+            const module = btn.dataset.module;
+            const component = btn.dataset.component;
+
+            grades = grades.filter(g =>
+                !(g.module === module && g.component === component)
+            );
+
+            saveGrades();
+            renderModuleAverages();
+            updateGoals();
+            };
+        });
+
         breakdown.appendChild(group);
     });
 }
@@ -486,14 +499,11 @@ document.addEventListener("click", (e) => {
     const btn = e.target.closest(".delete-grade-btn");
     if (!btn) return;
 
-    const module = btn.getAttribute("data-module").trim().toLowerCase();
-    const component = btn.getAttribute("data-component").trim().toLowerCase();
+    const module = btn.dataset.module;
+    const component = btn.dataset.component;
 
     grades = grades.filter(g =>
-        !(
-            g.module.trim().toLowerCase() === module &&
-            g.component.trim().toLowerCase() === component
-        )
+        !(g.module === module && g.component === component)
     );
 
     saveGrades();
