@@ -365,8 +365,15 @@ document.getElementById("add-grade").addEventListener("click", (e) => {
     }
 
         const existingIndex = grades.findIndex(
-        g => g.module === module && g.component === component
-        );
+    g => g.module === module && g.component === component);
+
+    if (existingIndex !== -1) {
+        // update existing grade
+        grades[existingIndex] = { module, component, mark, weight };
+    } else {
+        // add new grade
+        grades.push({ module, component, mark, weight });
+    }
 
         // prevent double-counting when editing same component
         let currentTotal = grades
@@ -476,19 +483,22 @@ function renderModuleAverages() {
     });
 }
 document.addEventListener("click", (e) => {
-    if (e.target.classList.contains("delete-grade-btn")) {
+    const btn = e.target.closest(".delete-grade-btn");
+    if (!btn) return;
 
-        const module = e.target.getAttribute("data-module");
-        const component = e.target.getAttribute("data-component");
+    const module = btn.getAttribute("data-module").trim().toLowerCase();
+    const component = btn.getAttribute("data-component").trim().toLowerCase();
 
-        grades = grades.filter(g =>
-            !(g.module === module && g.component === component)
-        );
+    grades = grades.filter(g =>
+        !(
+            g.module.trim().toLowerCase() === module &&
+            g.component.trim().toLowerCase() === component
+        )
+    );
 
-        saveGrades();
-        renderModuleAverages();
-        updateGoals();
-    }
+    saveGrades();
+    renderModuleAverages();
+    updateGoals();
 });
 /* ================= GOALS ================= */
 

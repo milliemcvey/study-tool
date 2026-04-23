@@ -121,7 +121,8 @@ button:hover {
     grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
     gap: 1.5rem;
     margin: 2vh 30vw;
-    
+    display: flex;
+    flex-direction: row;
 }
 
 .stat {
@@ -131,6 +132,8 @@ button:hover {
     padding: 1.2rem;
     text-align: center;
     transition: 0.2s;
+    width: 25%;
+    margin: 0 auto;
 }
 
 .stat:hover {
@@ -837,6 +840,14 @@ td {
     }
     nav a {
         display: none;
+    }
+    .stats-bar {
+        margin: 0 auto;
+        width: 75%;
+
+    }
+    .stat {
+        max-width: 15vw;
     }
 }
 
