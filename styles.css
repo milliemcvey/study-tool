@@ -1,8 +1,7 @@
-/* ------------ IMPORTS ------------ */
+/*  IMPORTS  */
 @import url('https://fonts.googleapis.com/css2?family=Arimo:wght@400..700&family=Cal+Sans&display=swap');
-
-/* ------------ ROOT VARIABLES ------------ */
-:root {
+/*  ROOT VARIABLES  */
+:root { /*Easier changing of colour theme for future reference*/
     --colour-1: rgb(164, 101, 151);
     --colour-2: rgb(252, 54, 146);
     --white: rgb(241, 233, 218);
@@ -11,8 +10,7 @@
     --background-light: rgb(121, 79, 112);
     --background-lightest: rgb(78, 44, 70);
 }
-
-/* ------------ BASE ------------ */
+/*  BASE  */
 body {
     margin: 0;
     font-family: "Arimo", sans-serif;
@@ -20,41 +18,33 @@ body {
     color: var(--white);
     background: linear-gradient(var(--background), var(--background-lightest));
 }
-
 section {
     padding: 1rem 0;
 }
-
 .container {
     width: min(1100px, 90%);
     margin: 0 auto;
 }
-
-/* ------------ HEADINGS ------------ */
+/*  HEADINGS  */
 h1, h2, h3 {
     font-family: "Cal Sans", sans-serif;
     letter-spacing: 1.75px;
 }
-
 h1 { 
     font-size: 2.25rem; 
 }
-
 h2 { 
     font-size: 2rem;
 }
-
 h3 { 
     font-size: 1.8rem;
     text-align: center;
     margin-top: 1vh;
 }
-
 h4{
     font-size: 1.3rem;
 }
-
-/* ------------ HEADER ------------ */
+/*  HEADER  */
 header {
     display: flex;
     justify-content: space-between;
@@ -67,24 +57,20 @@ header {
     border-bottom: 1px solid var(--white);
     z-index: 1000;
 }
-
 header h1 a {
     text-decoration: none;
     color: var(--white);
 }
-
 header nav a {
     margin-left: 1.5rem;
     color: var(--white);
     text-decoration: none;
 }
-
 header nav a:hover {
     color: var(--colour-2);
     transition: linear
 }
-
-/* ------------ BUTTONS ------------ */
+/*  BUTTONS  */
 button {
     background: var(--colour-2);
     border: none;
@@ -93,13 +79,11 @@ button {
     padding: 0.6rem 1rem;
     cursor: pointer;
 }
-
 button:hover {
     background: var(--colour-1);
     transition: linear 0.4s;
 }
-
-/* ------------ SECTION STYLING ------------ */
+/*  SECTION STYLING  */
 .notification-card,
 .module-grades,
 .grade-entry,
@@ -114,8 +98,7 @@ button:hover {
     padding: 1.5rem;
     margin: 1.5% 0;
 }
-
-/* ------------ OVERVIEW ------------ */
+/*  OVERVIEW  */
 .stats-bar {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -124,7 +107,6 @@ button:hover {
     display: flex;
     flex-direction: row;
 }
-
 .stat {
     background: rgba(var(--black), 0.5);
     border: 1px solid rgba(var(--white), 0.1);
@@ -135,18 +117,15 @@ button:hover {
     width: 25%;
     margin: 0 auto;
 }
-
 .stat:hover {
     transform: translateY(-4px);
     border-color: var(--colour-2);
 }
-
 .stat h4 {
     margin: 0;
     font-size: 2rem;
     color: var(--colour-2);
 }
-
 .stat p {
     margin: 0.3rem 0 0;
     opacity: 0.8;
@@ -155,7 +134,6 @@ button:hover {
 #overdue-count {
     color: #ff6b6b;
 }
-
 #upcoming-count {
     color: #51cf66;
 }
@@ -180,7 +158,6 @@ button:hover {
     border-radius: 6px;
     transition: 0.2s;
 }
-
 .notification-card li:hover {
     background: rgba(255, 255, 255,0.25);
     transform: translateX(4px);
@@ -188,32 +165,28 @@ button:hover {
 #overdue-task-list li {
     border-left: 4px solid #ff6b6b;
 }
-
 #upcoming-deadline-list li {
     border-left: 4px solid (--colour-2);
 }
-/* ------------ CALENDAR ------------ */
+/*  CALENDAR  */
 .calendar-header {
     display: flex;
     justify-content: center;
     gap: 1rem;
     align-items: center;
 }
-
 .month-arrow {
     border-radius: 15px;
     margin: 0 5%;
     font-size: 1.45rem;
     padding: .5% 2%;
 }
-
 .calendar-grid {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     gap: 2px;
     margin-top: 1rem;
 }
-
 .day {
     border-radius: 10px;
     padding: 8px;
@@ -223,7 +196,6 @@ button:hover {
     background: white;
     color: black;
 }
-
 .header-cell {
     background: transparent;
     color: var(--white);
@@ -233,11 +205,9 @@ button:hover {
     min-height: auto;
     height: auto;
 }
-
 .day.blank {
     background: var(--background-light);
 }
-
 .task {
     background-color: var(--colour-2);
     padding: 3% 5%;
@@ -245,27 +215,20 @@ button:hover {
     margin: 2% 1%;
     color: white;
     border: solid 1px black;
-}
-
-.task {
     font-size: 0.8rem;
 }
-
-/* ------------ TASK SECTION LAYOUT ------------ */
+/*  TASK SECTION LAYOUT  */
 .top-section {
     display: flex;
     gap: 2rem;
 }
-
 .top-section-left {
     flex: 2;
 }
-
 #task-form-container {
     flex: 1;
 }
-
-/* ------------ TASK GRID ------------ */
+/*  TASK GRID  */
 .task-display {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -273,8 +236,7 @@ button:hover {
     align-items: stretch;
     margin-top: 2vh;
 }
-
-/* ------------ TASK CARDS ------------ */
+/*  TASK CARDS  */
 .task-card {
     background: rgba(var(--black), 0.75);
     border: 1px solid rgba(var(--white), 0.15);
@@ -292,17 +254,14 @@ button:hover {
 .task-card h5 {
     margin: 0.5rem 0;
 }
-
 .task-card:hover {
     transform: translateY(-5px);
     border-color: var(--colour-2);
 }
-
 .task-card button {
     margin-top: 2vh;
 }
-
-/* ------------ TASK FORM ------------ */
+/*  TASK FORM  */
 #task-form {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -310,26 +269,19 @@ button:hover {
     padding: 0 6%;
     margin: 2%;
 }
-
 .form-row {
     display: flex;
     flex-direction: column;
 }
-
-/* Full width inputs */
 #task-name,
 #task-description,
 #task-url {
     grid-column: span 2;
 }
-
-/* Full width button */
 #add-task {
     grid-column: span 2;
     width: 100%;
 }
-
-/* Inputs styling */
 #task-form input,
 #task-form textarea,
 #task-form select {
@@ -340,30 +292,25 @@ button:hover {
     background: var(--background-light);
     color: var(--white);
 }
-
 #task-form input:focus,
 #task-form textarea:focus,
 #task-form select:focus {
     border: 1px solid var(--colour-2);
 }
-
-/* ------------ GRADES ------------ */
+/*  GRADES  */
 .grades-layout {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 2rem;
 }
-
 table {
     width: 100%;
     border-collapse: collapse;
 }
-
 td {
     padding: 5rem;
     border-bottom: 1px solid rgba(var(--white), 0.2);
 }
-
 .day th {
     height: 3vh;
 }
@@ -375,7 +322,6 @@ td {
     padding: 2rem;
     transition: 0.2s;
 }
-
 .module-group {
     background: rgba(var(--black), 0.75);
     border: 1px solid rgba(var(--white), 0.15);
@@ -386,7 +332,6 @@ td {
     transition: 0.2s;
 
 }
-
 .component-item {
     display: grid;
     grid-template-columns: 1fr 50px 50px;
@@ -416,12 +361,10 @@ td {
     transition: 0.2s;
     font-size: 0.8rem;
 }
-
 .delete-grade-btn:hover {
     background: #ff6b6b;
     color: white;
 }
-
 .delete-grade-btn {
     padding: 0.25rem 0.6rem;
     font-size: 0.8rem;
@@ -429,15 +372,10 @@ td {
     cursor: pointer;
     transition: 0.2s;
     border: 1px solid transparent;
-}
-
-/* delete button */
-.delete-grade-btn {
     background: transparent;
     border: 1px solid #ff6b6b;
     color: #ff6b6b;
 }
-
 .delete-grade-btn:hover {
     background: #ff6b6b;
     color: white;
@@ -448,8 +386,6 @@ td {
     gap: 1rem;
     align-items: flex-end;
 }
-
-/* Inputs + selects */
 .grade-entry input,
 .grade-entry select {
     padding: 0.7rem;
@@ -458,30 +394,25 @@ td {
     background: var(--background-light);
     color: var(--white);
 }
-
-/* Focus state */
 .grade-entry input:focus,
 .grade-entry select:focus {
     border-color: var(--colour-2);
     box-shadow: 0 0 0 2px rgba(252, 54, 146, 0.2);
 }
-
-/* Labels */
 .grade-entry label {
     font-size: 0.9rem;
     opacity: 0.9;
     margin-bottom: 0.3rem;
 }
-
-/* Form rows spacing */
 .grade-entry .form-row {
     flex: 1;
     min-width: 140px;
     display: flex;
     flex-direction: column;
 }
-
-/* Button styling to match app */
+.form-error {
+    color: #ff6b6b;
+}
 .grade-entry button {
     background: var(--colour-2);
     border: none;
@@ -495,50 +426,24 @@ td {
     min-width: 140px;
     height: 42px;
 }
-
 .grade-entry button:hover {
     background: var(--colour-1);
     transform: translateY(-2px);
 }
-
-/* Error message styling */
 #grade-form-error {
     color: #ff6b6b;
     font-size: 0.9rem;
     margin-top: 0.5rem;
 }
-@media (max-width: 700px) {
-    .grade-entry form {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    .grade-entry button {
-        width: 100%;
-    }
-}
-#module-grades-body tr {
-    transition: 0.2s;
-}
-
-#module-grades-body td {
-    padding: 0.9rem 0.6rem;
-    border-bottom: 1px solid rgba(var(--white), 0.12);
-}
-
-/* module name cell */
 #module-grades-body td:first-child {
     font-weight: 600;
     color: var(--white);
 }
-
-/* average score cell */
 #module-grades-body td:last-child {
     font-weight: bold;
     color: var(--colour-2);
     text-align: right;
 }
-/* table header styling */
 .module-grades table thead th {
     text-align: left;
     padding: 0.8rem 0.6rem;
@@ -547,31 +452,24 @@ td {
     color: rgba(241, 233, 218, 0.8);
     border-bottom: 2px solid rgba(var(--white), 0.2);
 }
-
-/* table base */
 .module-grades table {
     margin-top: 1rem;
     width: 100%;
     border-collapse: collapse;
 }
-
-/* subtle rounding feel */
 .module-grades {
     overflow: hidden;
 }
-/* ------------ GOALS ------------ */
+/*  GOALS  */
 #goals .container {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
 }
-
 .goals-container {
     display: flex;
     justify-content: center;
 }
-
-/* MAIN CARD */
 .goal-selector {
     width: min(500px, 100%);
     background: rgba(var(--black), 0.75);
@@ -586,26 +484,19 @@ td {
 
     transition: 0.2s ease;
 }
-
 .goal-selector:hover {
     transform: translateY(-4px);
     border-color: var(--colour-2);
 }
-
-/* TITLE */
 .goal-selector h3 {
     margin: 0;
     color: var(--colour-2);
     font-size: 1.6rem;
 }
-
-/* TARGET TEXT */
 #target-range {
     font-size: 1rem;
     opacity: 0.8;
 }
-
-/* DROPDOWN */
 #grade-goal {
     width: 100%;
     padding: 0.8rem;
@@ -620,48 +511,22 @@ td {
 
     transition: 0.2s;
 }
-
 #grade-goal:focus {
     outline: none;
     border-color: var(--colour-2);
     box-shadow: 0 0 0 2px rgba(252, 54, 146, 0.2);
 }
-
-/* AVERAGE TEXT */
 #overall-average {
     color: var(--colour-2);
     font-weight: bold;
     font-size: 1.3rem;
 }
-
-/* OPTIONAL STATUS TEXT (if you add it later) */
-#goal-status {
-    font-size: 1rem;
-    opacity: 0.9;
-}
-
-
-/* PROGRESS BAR FILL */
-.progress-bar-fill {
-    height: 100%;
-    width: 0%;
-    border-radius: 50px;
-    background: linear-gradient(
-        90deg,
-        var(--colour-2),
-        var(--colour-1)
-    );
-    transition: width 0.5s ease;
-}
-
-/* AVERAGE DISPLAY */
 #overall-average {
     color: var(--colour-2);
     font-weight: bold;
     font-size: 1.2rem;
 }
-
-/* ------------ TIMER ------------ */
+/*  TIMER  */
 .timer-container {
     display: grid;
     grid-template-columns: 1fr 1.5fr;
@@ -682,12 +547,10 @@ td {
     justify-content: center;
     gap: 1rem;
 }
-
 .timer-settings label {
     font-size: 0.9rem;
     opacity: 0.85;
 }
-
 .timer-settings input {
     padding: 0.7rem;
     border-radius: 8px;
@@ -696,13 +559,11 @@ td {
     color: var(--white);
     font-size: 1rem;
 }
-
 .timer-settings input:focus {
     border-color: var(--colour-2);
     box-shadow: 0 0 0 2px rgba(252, 54, 146, 0.2);
     outline: none;
 }
-
 .timer-display-panel {
     display: flex;
     flex-direction: column;
@@ -710,7 +571,6 @@ td {
     align-items: center;
     gap: 2rem;
 }
-
 .timer-display {
     font-size: 3.5rem;
     font-family: "Cal Sans", sans-serif;
@@ -718,21 +578,17 @@ td {
     color: var(--colour-2);
     text-align: center;
 }
-
 .timer-controls {
     display: flex;
     gap: 1rem;
     flex-wrap: wrap;
     justify-content: center;
 }
-
 .timer-controls button {
     min-width: 90px;
     font-weight: bold;
 }
-
-/* ------------ FOOTER ------------ */
-
+/*  FOOTER  */
 .site-footer {
     margin-top: 3rem;
     padding: 2.5rem 0;
@@ -740,8 +596,6 @@ td {
     background: rgba(var(--black), 0.85);
     border-top: 1px solid rgba(var(--white), 0.15);
 }
-
-/* layout */
 .footer-content {
     display: flex;
     justify-content: space-between;
@@ -749,27 +603,21 @@ td {
     gap: 2rem;
     flex-wrap: wrap;
 }
-
-/* left */
 .footer-left h3 {
     margin: 0;
     color: var(--colour-2);
     font-size: 1.4rem;
 }
-
 .footer-left p {
     margin: 0.3rem 0 0;
     opacity: 0.8;
 }
-
-/* links */
 .footer-links {
     display: flex;
     gap: 1rem;
     flex-wrap: wrap;
     justify-content: center;
 }
-
 .footer-links a {
     color: var(--white);
     text-decoration: none;
@@ -780,46 +628,32 @@ td {
 
     transition: 0.2s;
 }
-
 .footer-links a:hover {
     background: var(--colour-2);
     color: white;
 }
-
-/* right */
 .footer-right {
     opacity: 0.7;
     font-size: 0.9rem;
 }
-
-/* responsive */
-@media (max-width: 700px) {
+/*  RESPONSIVE  */
+@media (max-width: 900px) {
     .footer-content {
         flex-direction: column;
         text-align: center;
     }
-
     .footer-links {
         justify-content: center;
     }
-}
-
-/* ------------ RESPONSIVE ------------ */
-@media (max-width: 800px) {
-    .goals-container {
-        grid-template-columns: 1fr;
-    }
-}
-@media (max-width: 700px) {
     .timer-container {
         grid-template-columns: 1fr;
     }
-
     .timer-display {
         font-size: 3rem;
     }
-}
-@media (max-width: 900px) {
+    .goals-container {
+        grid-template-columns: 1fr;
+    }
     .top-section {
         flex-direction: column;
     }
@@ -849,30 +683,32 @@ td {
     .stat {
         max-width: 15vw;
     }
-}
-
-@media (max-width: 600px) {
-
     .task-display {
         grid-template-columns: 1fr;
     }
-
     #task-form {
         grid-template-columns: 1fr;
     }
-
     #task-name,
     #task-description,
     #task-url,
     #add-task {
         grid-column: span 1;
     }
-
     h1 { font-size: 2rem; }
     h2 { font-size: 1.6rem; }
+    .grade-entry form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .grade-entry button {
+        width: 100%;
+    }
 }
-
-/* ------------ ERRORS ------------ */
-.form-error {
-    color: #ff6b6b;
+#module-grades-body tr {
+    transition: 0.2s;
+}
+#module-grades-body td {
+    padding: 0.9rem 0.6rem;
+    border-bottom: 1px solid rgba(var(--white), 0.12);
 }

@@ -44,7 +44,7 @@ renderTasksOnCalendar();
 updateNotifications();
 loadGradeFormOptions();
 renderModuleAverages();
-updateGoals();
+
 /* ================= LOAD MODULES ================= */
 function loadModules() {
     const taskModules = revisionTasks.map(t => t.module);
@@ -178,7 +178,7 @@ document.getElementById("next-month").onclick = () => {
 };
 
 /* ================= ADD TASK ================= */
-document.getElementById("add-task").addEventListener("click", (e) => {
+document.getElementById("task-form").addEventListener("submit", e => {
     e.preventDefault();
     addTask();
 });
@@ -347,7 +347,6 @@ document.getElementById("add-grade").addEventListener("click", (e) => {
     const module = document.getElementById("grade-module").value;
     const component = document.getElementById("grade-component").value;
     const mark = parseFloat(document.getElementById("grade-mark").value);
-    const weight = parseFloat(document.getElementById("grade-weight").value);
 
     const error = document.getElementById("grade-form-error");
     error.textContent = "";
@@ -356,21 +355,9 @@ document.getElementById("add-grade").addEventListener("click", (e) => {
         !module ||
         !component ||
         isNaN(mark) ||
-        isNaN(weight) ||
-        mark < 0 || mark > 100 ||
-        weight < 0 || weight > 100
+        mark < 0 || mark > 100
     ) {
-        error.textContent = "Enter valid mark and weight (0–100).";
-        return;
-    }
-
-    let currentTotal = grades
-        .filter(g => !(g.module === module && g.component === component))
-        .reduce((sum, g) => sum + (g.weight || 0), 0);
-
-    if (currentTotal + weight > 100) {
-        error.textContent =
-            `Total module weight cannot exceed 100% (currently ${currentTotal}%).`;
+        error.textContent = "Enter a valid mark (0–100).";
         return;
     }
 
@@ -378,31 +365,23 @@ document.getElementById("add-grade").addEventListener("click", (e) => {
         g => g.module === module && g.component === component
     );
 
+    const newGrade = { module, component, mark };
+
     if (existingIndex !== -1) {
-        grades[existingIndex] = { module, component, mark, weight };
+        grades[existingIndex] = newGrade;
     } else {
-        grades.push({ module, component, mark, weight });
+        grades.push(newGrade);
     }
 
     saveGrades();
 
     document.getElementById("grade-mark").value = "";
-    document.getElementById("grade-weight").value = "100";
 
     renderModuleAverages();
     updateGoals();
 });
 document.getElementById("grade-module").addEventListener("change", (e) => {
     const module = e.target.value;
-
-    const total = getModuleTotalWeight(module);
-
-    let info = document.getElementById("module-weight-info");
-    if (!info) return;
-
-    info.textContent = module
-        ? `Current module weight: ${total}%`
-        : "";
 });
 function renderModuleAverages() {
     const tbody = document.getElementById("module-grades-body");
@@ -413,31 +392,17 @@ function renderModuleAverages() {
 
     const moduleMap = {};
 
-    // Group grades by module
     grades.forEach(g => {
         if (!moduleMap[g.module]) moduleMap[g.module] = [];
         moduleMap[g.module].push(g);
     });
 
-    // Render each module
     Object.keys(moduleMap).forEach(module => {
         const items = moduleMap[module];
 
-        let totalWeight = 0;
-        let weightedSum = 0;
+        const avg =
+            items.reduce((sum, i) => sum + i.mark, 0) / items.length;
 
-        // Weighted calculation
-        items.forEach(i => {
-            const w = i.weight || 0;
-            weightedSum += i.mark * (w / 100);
-            totalWeight += w;
-        });
-
-        const avg = totalWeight > 0
-            ? (weightedSum / (totalWeight / 100))
-            : 0;
-
-        // TABLE ROW
         const row = document.createElement("tr");
         row.innerHTML = `
             <td>${module}</td>
@@ -445,7 +410,6 @@ function renderModuleAverages() {
         `;
         tbody.appendChild(row);
 
-        // BREAKDOWN CARD
         const group = document.createElement("div");
         group.className = "module-group";
 
@@ -454,12 +418,7 @@ function renderModuleAverages() {
 
             ${items.map(i => `
                 <div class="component-item">
-                    <div>
-                        <div>${i.component}</div>
-                        <div class="component-meta">
-                            Weight: ${i.weight || 0}%
-                        </div>
-                    </div>
+                    <div>${i.component}</div>
 
                     <div class="component-mark">
                         ${i.mark}%
@@ -477,38 +436,22 @@ function renderModuleAverages() {
             `).join("")}
         `;
 
-        document.querySelectorAll(".delete-grade-btn").forEach(btn => {
-            btn.onclick = () => {
-            const module = btn.dataset.module;
-            const component = btn.dataset.component;
-
-            grades = grades.filter(g =>
-                !(g.module === module && g.component === component)
-            );
-
-            saveGrades();
-            renderModuleAverages();
-            updateGoals();
-            };
-        });
-
         breakdown.appendChild(group);
     });
 }
 document.addEventListener("click", (e) => {
-    const btn = e.target.closest(".delete-grade-btn");
-    if (!btn) return;
+    if (e.target.classList.contains("delete-grade-btn")) {
 
-    const module = btn.dataset.module;
-    const component = btn.dataset.component;
+        const module = e.target.getAttribute("data-module");
+        const component = e.target.getAttribute("data-component");
 
-    grades = grades.filter(g =>
-        !(g.module === module && g.component === component)
-    );
+        grades = grades.filter(g =>
+            !(g.module === module && g.component === component)
+        );
 
-    saveGrades();
-    renderModuleAverages();
-    updateGoals();
+        saveGrades();
+        renderModuleAverages();
+    }
 });
 /* ================= GOALS ================= */
 
@@ -537,20 +480,12 @@ function updateGoals() {
     let count = 0;
 
     Object.values(moduleMap).forEach(items => {
-        let weightedSum = 0;
-        let totalWeight = 0;
-
-        items.forEach(i => {
-            const w = i.weight || 0;
-            weightedSum += i.mark * (w / 100);
-            totalWeight += w;
-        });
-
-        const avg = totalWeight ? (weightedSum / (totalWeight / 100)) : 0;
+        const avg =
+            items.reduce((sum, i) => sum + i.mark, 0) / items.length;
 
         total += avg;
         count++;
-    });
+        });
 
     const overallAvg = total / count;
 
@@ -582,6 +517,7 @@ document.getElementById("grade-goal").addEventListener("change", (e) => {
     gradeGoal = e.target.value;
     updateGoals();
 });
+
 /* ================= TIMER ================= */
 let timerInterval = null;
 let remainingSeconds = 0;
